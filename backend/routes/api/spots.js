@@ -1,7 +1,34 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, Review, SpotImage, Sequelize } = require('../../db/models');
+const { Spot, Review, SpotImage, Sequelize, User } = require('../../db/models');
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let spot = await Spot.findByPk(id, {
+      include: [{ model: SpotImage }, { model: Review }, { model: User }],
+    });
+    console.log(spot);
+
+    let totalStars = 0;
+    if (spot.Reviews.length) {
+      spot.Reviews.forEach(review => {
+        totalStars += review.stars;
+      });
+
+      const avgRating = totalStars / spot.Reviews.length;
+      spot.dataValues.avgRating = avgRating;
+    }
+
+    spot = spot.toJSON();
+    delete spot.Reviews;
+
+    res.json(spot);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get('/', async (req, res, next) => {
   try {
@@ -12,7 +39,7 @@ router.get('/', async (req, res, next) => {
         },
         {
           model: SpotImage,
-        }
+        },
       ],
     });
 
@@ -42,7 +69,17 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
