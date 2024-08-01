@@ -23,7 +23,7 @@ module.exports = {
             model: 'Reviews',
           },
           onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onDelete: 'CASCADE',
         },
         url: {
           type: Sequelize.STRING,
@@ -37,11 +37,11 @@ module.exports = {
           type: Sequelize.DATE,
         },
       },
-      options,
+      options
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Reviews'
+    options.tableName = 'ReviewImages';
     await queryInterface.dropTable(options);
   },
 };
