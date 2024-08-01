@@ -53,8 +53,13 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     spots.forEach(async spot => {
-      const instance = await Spot.findOne({ where: spot });
-      await instance.destroy();
+      options.tableName = 'Spots';
+      const Op = Sequelize.Op;
+      return queryInterface.bulkDelete(options, {
+        address: {
+          [Op.in]: ['123 Disney Lane', '43 Road Way', '2 Main Street, Apt. #4']
+        }
+      });
     });
   },
 };
