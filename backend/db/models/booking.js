@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
   Booking.init({
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    allowNull: false,
     startDate: {
       type: DataTypes.DATE,
+      allowNull: false,
       validate: {
         notPast(value) {
           const today = new Date();
