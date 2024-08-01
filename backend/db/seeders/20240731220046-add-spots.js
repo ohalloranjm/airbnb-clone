@@ -46,9 +46,9 @@ const spots = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    spots.forEach(async spot => {
+    for (const spot of spots) {
       await Spot.create(spot);
-    });
+    }
   },
 
   async down(queryInterface, Sequelize) {
