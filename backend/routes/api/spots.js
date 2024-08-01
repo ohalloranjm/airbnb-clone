@@ -3,6 +3,12 @@ const router = express.Router();
 
 const { Spot, Review, SpotImage, Sequelize, User } = require('../../db/models');
 
+router.get('/current', async (req, res, next) => {
+  console.log(req.user);
+
+  res.json([]);
+});
+
 router.get('/:spotId', async (req, res, next) => {
   try {
     const { spotId } = req.params;
@@ -128,7 +134,17 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
