@@ -22,12 +22,16 @@ module.exports = {
           references: {
             model: 'Spots',
           },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
         },
         userId: {
           type: Sequelize.INTEGER,
           references: {
             model: 'Users',
           },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE'
         },
         review: {
           type: Sequelize.STRING,
