@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
     /**
@@ -10,33 +8,31 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Review.belongsTo(models.Spot, {
-        foreignKey: 'spotId'
-      });
-      Review.belongsTo(models.User, {
-        foreignKey: 'userId'
-      })
+      Review.belongsTo(models.Spot, { foreignKey: 'spotId' });
+
+      Review.belongsTo(models.User, { foreignKey: 'userId' });
+
+      Review.hasMany(models.ReviewImage, { foreignKey: 'reviewId' });
     }
   }
-  Review.init({
-    spotId: {
-      type: DataTypes.INTEGER
+  Review.init(
+    {
+      spotId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      review: DataTypes.STRING,
+      stars: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 1,
+          max: 5,
+        },
+      },
     },
-    userId: DataTypes.INTEGER,
-    review: {
-      type: DataTypes.STRING,
+    {
+      sequelize,
+      modelName: 'Review',
     },
-    stars: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        min: 1,
-        max: 5
-      }
-    }
-  }, {
-    sequelize,
-    modelName: 'Review',
-  });
+  );
   return Review;
 };
