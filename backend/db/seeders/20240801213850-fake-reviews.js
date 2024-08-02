@@ -23,6 +23,12 @@ module.exports = {
         review: 'Amaaazing!',
         stars: 5,
       },
+      {
+        spotId: 3,
+        userId: 3,
+        review: 'so-so',
+        stars: 2,
+      },
     ];
 
     for (const review of reviews) {
