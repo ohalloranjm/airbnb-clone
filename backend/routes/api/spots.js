@@ -1,7 +1,38 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, Review, SpotImage, Sequelize, User } = require('../../db/models');
+const { Spot, Review, ReviewImage, SpotImage, Sequelize, User } = require('../../db/models');
+
+router.get('/:spotId/reviews', async (req, res, next) => {
+  const { spotId } = req.params;
+  const spot = await Spot.findByPk(spotId, {
+    include: [
+      {
+        model: Review,
+        include: [
+          {
+            model: User,
+            attributes: ['id', 'firstName', 'lastName'],
+          },
+          {
+            model: ReviewImage,
+            attributes: ['id', 'url'],
+          },
+        ],
+      },
+    ],
+  });
+
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+    });
+  }
+
+  res.json({
+    Reviews: spot.Reviews,
+  });
+});
 
 router.get('/current', async (req, res, next) => {
   const resBody = [];
@@ -261,17 +292,7 @@ router.delete('/:spotId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({
       address,
