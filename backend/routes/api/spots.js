@@ -53,25 +53,39 @@ router.get('/:spotId/bookings', async (req, res, next) => {
   const { spotId } = req.params;
 
   const spot = await Spot.findOne({
-    where: { spotId },
+    where: { id: spotId },
     include: [
       {
         model: Booking,
         include: [
           {
             model: User,
+            attributes: ['id', 'firstName', 'lastName'],
           },
         ],
       },
     ],
   });
 
-  res.json(spot);
-
-  if (spot.ownerId !== userId) {
-    res.json(spot);
+  if (userId === spot.ownerId) {
+    res.json({
+      Bookings: spot.Bookings,
+    });
   } else {
-    res.josn([]);
+    const resBody = [];
+    for (let booking of spot.Bookings) {
+      booking = booking.toJSON();
+      delete booking.User;
+      delete booking.id;
+      delete booking.userId;
+      delete booking.createdAt;
+      delete booking.updatedAt;
+      resBody.push(booking);
+    }
+
+    res.json({
+      Bookings: [...resBody],
+    });
   }
 });
 
