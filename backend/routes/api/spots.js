@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, Review, ReviewImage, SpotImage, Sequelize, User } = require('../../db/models');
+const {
+  Spot,
+  Review,
+  ReviewImage,
+  SpotImage,
+  Sequelize,
+  User,
+} = require('../../db/models');
+const { json } = require('sequelize');
 
 router.get('/:spotId/reviews', async (req, res, next) => {
   const { spotId } = req.params;
@@ -32,6 +40,50 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   res.json({
     Reviews: spot.Reviews,
   });
+});
+
+router.post('/:spotId/reviews', async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const userId = req.user.id;
+
+    const spot = await Spot.findByPk(spotId, {
+      include: [
+        {
+          model: Review,
+        },
+      ],
+    });
+
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    if (spot.Reviews.find(review => review.userId === userId)) {
+      return res.status(500).json({
+        message: 'User already has a review for this spot',
+      });
+    }
+
+    const newReview = await spot.createReview({
+      ...req.body,
+      userId,
+    });
+
+    res.status(201).json(newReview);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      console.log(err);
+      res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          [err.errors[0].path]: err.errors[0].message,
+        },
+      });
+    }
+  }
 });
 
 router.get('/current', async (req, res, next) => {
@@ -292,7 +344,17 @@ router.delete('/:spotId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
