@@ -1,13 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-  Spot,
-  Review,
-  ReviewImage,
-  Sequelize,
-  User,
-} = require('../../db/models');
+const { Spot, Review, ReviewImage, Sequelize, User } = require('../../db/models');
 
 router.get('/current', async (req, res, next) => {
   const userId = req.user.id;
@@ -54,6 +48,39 @@ router.post('/:reviewId/images', async (req, res, next) => {
         errors: {
           [err.errors[0].path]: err.errors[0].message,
         },
+      });
+    }
+  }
+});
+
+router.put('/:reviewId', async (req, res, next) => {
+  try {
+    const { reviewId } = req.params;
+    const userId = req.user.id;
+    const review = await Review.findOne({
+      where: {
+        id: reviewId,
+        userId
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review couldn't be found"
+      });
+    }
+
+    await review.update(req.body);
+    await review.save();
+
+    res.json(review);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          [err.errors[0].path]: err.errors[0].message,
+        }
       });
     }
   }
