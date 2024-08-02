@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const { Spot, Review, ReviewImage, SpotImage, Sequelize, User } = require('../../db/models');
-const { json } = require('sequelize');
 
 router.get('/:spotId/reviews', async (req, res, next) => {
   const { spotId } = req.params;
