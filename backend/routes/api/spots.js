@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { requireAuth } = require('../../utils/auth')
 
 const {
   Spot,
@@ -42,13 +43,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   });
 });
 
-router.get('/:spotId/bookings', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
   const userId = req.user.id;
   const { spotId } = req.params;
 
@@ -89,13 +84,7 @@ router.get('/:spotId/bookings', async (req, res, next) => {
   }
 });
 
-router.post('/:spotId/reviews', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const userId = req.user.id;
@@ -139,13 +128,7 @@ router.post('/:spotId/reviews', async (req, res, next) => {
   }
 });
 
-router.get('/current', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.get('/current', requireAuth, async (req, res, next) => {
   const resBody = [];
   const id = req.user.id;
   const userSpots = await Spot.findAll({
@@ -275,13 +258,7 @@ router.get('/:spotId', async (req, res, next) => {
   }
 });
 
-router.post('/:spotId/images', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
@@ -315,13 +292,7 @@ router.post('/:spotId/images', async (req, res, next) => {
   }
 });
 
-router.put('/:spotId', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.put('/:spotId', requireAuth, async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
@@ -350,13 +321,7 @@ router.put('/:spotId', async (req, res, next) => {
   }
 });
 
-router.delete('/:spotId', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
   const { spotId } = req.params;
   const ownerId = req.user.id;
 
@@ -377,7 +342,7 @@ router.delete('/:spotId', async (req, res, next) => {
   });
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
       address,

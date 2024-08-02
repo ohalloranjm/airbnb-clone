@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { requireAuth } = require('../../utils/auth');
 
-const { Spot, Review, ReviewImage, Sequelize, User } = require('../../db/models');
+const { Review, ReviewImage, Sequelize } = require('../../db/models');
 
-router.get('/current', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
+router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id;
   const reviews = await Review.findAll({
     where: {
@@ -19,12 +15,7 @@ router.get('/current', async (req, res, next) => {
   res.json(reviews);
 });
 
-router.post('/:reviewId/images', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
   try {
     const { reviewId } = req.params;
@@ -64,13 +55,7 @@ router.post('/:reviewId/images', async (req, res, next) => {
   }
 });
 
-router.put('/:reviewId', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.put('/:reviewId', requireAuth, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
     const userId = req.user.id;
@@ -103,13 +88,7 @@ router.put('/:reviewId', async (req, res, next) => {
   }
 });
 
-router.delete('/:reviewId', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
   const { reviewId } = req.params;
   const userId = req.user.id;
   const review = await Review.findOne({

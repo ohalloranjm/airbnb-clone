@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { requireAuth } = require('../../utils/auth');
 
 const {
   Spot,
@@ -11,13 +12,7 @@ const {
   Booking,
 } = require('../../db/models');
 
-router.get('/current', async (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'Authentication required',
-    });
-  }
-
+router.get('/current', requireAuth, async (req, res, next) => {
   const resBody = [];
   const userId = req.user.id;
   const bookings = await Booking.findAll({
@@ -35,10 +30,10 @@ router.get('/current', async (req, res, next) => {
             model: SpotImage,
             attributes: ['url'],
             where: {
-              preview: true
-            }
-          }
-        ]
+              preview: true,
+            },
+          },
+        ],
       },
     ],
   });
@@ -53,7 +48,7 @@ router.get('/current', async (req, res, next) => {
   }
 
   res.json({
-    Bookings: [...resBody]
+    Bookings: [...resBody],
   });
 });
 
