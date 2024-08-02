@@ -236,9 +236,42 @@ router.put('/:spotId', async (req, res, next) => {
   }
 });
 
+router.delete('/:spotId', async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const ownerId = req.user.id;
+
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId,
+      },
+    });
+
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    await spot.destroy();
+    res.json({
+      message: 'Successfully deleted',
+    });
+  } catch (err) {}
+});
+
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
