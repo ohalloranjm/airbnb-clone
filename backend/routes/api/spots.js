@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth } = require('../../utils/auth')
+const { requireAuth } = require('../../utils/auth');
 
 const {
   Spot,
@@ -12,7 +12,7 @@ const {
   User,
 } = require('../../db/models');
 
-router.get('/:spotId/reviews', async (req, res, next) => {
+router.get('/:spotId/reviews', async (req, res) => {
   const { spotId } = req.params;
   const spot = await Spot.findByPk(spotId, {
     include: [
@@ -43,7 +43,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   });
 });
 
-router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   const userId = req.user.id;
   const { spotId } = req.params;
 
@@ -84,7 +84,84 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
   }
 });
 
-router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { spotId } = req.params;
+
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+      },
+      include: [
+        {
+          model: Booking,
+        },
+      ],
+    });
+
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    if (userId === spot.ownerId) {
+      return res.status(403).json({
+        message: 'Spot must not belong to user',
+      });
+    }
+
+    for (const booking of spot.Bookings) {
+      const startYear = booking.startDate.getFullYear();
+      const startMonth = String(booking.startDate.getMonth() + 1).padStart(2, '0');
+      const startDay = String(booking.startDate.getDate()).padStart(2, '0')
+      const bookingStartDate = `${startYear}-${startMonth}-${startDay}`;
+
+      const endYear = booking.endDate.getFullYear();
+      const endMonth = String(booking.endDate.getMonth() + 1).padStart(2, '0');
+      const endDay = String(booking.endDate.getDate()).padStart(2, '0')
+      const bookingEndDate = `${endYear}-${endMonth}-${endDay}`;
+
+      if (bookingStartDate <= req.body.startDate && bookingEndDate >= req.body.startDate) {
+        return res.status(403).json({
+          message: 'Sorry, this spot is already booked for the specified dates',
+          errors: {
+            startDate: 'Start date conflicts with an existing booking',
+          },
+        });
+      }
+
+      if (bookingStartDate <= req.body.endDate && bookingEndDate >= req.body.endDate) {
+        return res.status(403).json({
+          message: 'Sorry, this spot is already booked for the specified dates',
+          errors: {
+            endDate: 'End date conflicts with an existing booking',
+          },
+        });
+      }
+    };
+
+    const newBooking = await Booking.create({
+      ...req.body,
+      spotId: +spotId,
+      userId,
+    });
+
+    res.status(201).json(newBooking);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          [err.errors[0].path]: err.errors[0].message,
+        },
+      });
+    }
+  }
+});
+
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
   try {
     const { spotId } = req.params;
     const userId = req.user.id;
@@ -117,7 +194,6 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
     res.status(201).json(newReview);
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {
-      console.log(err);
       res.status(400).json({
         message: 'Bad Request',
         errors: {
@@ -128,7 +204,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
   }
 });
 
-router.get('/current', requireAuth, async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res) => {
   const resBody = [];
   const id = req.user.id;
   const userSpots = await Spot.findAll({
@@ -258,7 +334,7 @@ router.get('/:spotId', async (req, res, next) => {
   }
 });
 
-router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+router.post('/:spotId/images', requireAuth, async (req, res) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
@@ -292,7 +368,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   }
 });
 
-router.put('/:spotId', requireAuth, async (req, res, next) => {
+router.put('/:spotId', requireAuth, async (req, res) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
@@ -321,7 +397,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
   }
 });
 
-router.delete('/:spotId', requireAuth, async (req, res, next) => {
+router.delete('/:spotId', requireAuth, async (req, res) => {
   const { spotId } = req.params;
   const ownerId = req.user.id;
 
@@ -342,19 +418,9 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
   });
 });
 
-router.post('/', requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({
       address,
