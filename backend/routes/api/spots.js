@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const { Spot, Review, ReviewImage, SpotImage, Sequelize, User } = require('../../db/models');
+const {
+  Spot,
+  Booking,
+  Review,
+  ReviewImage,
+  SpotImage,
+  Sequelize,
+  User,
+} = require('../../db/models');
 
 router.get('/:spotId/reviews', async (req, res, next) => {
   const { spotId } = req.params;
@@ -32,6 +40,39 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   res.json({
     Reviews: spot.Reviews,
   });
+});
+
+router.get('/:spotId/bookings', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
+  const userId = req.user.id;
+  const { spotId } = req.params;
+
+  const spot = await Spot.findOne({
+    where: { spotId },
+    include: [
+      {
+        model: Booking,
+        include: [
+          {
+            model: User,
+          },
+        ],
+      },
+    ],
+  });
+
+  res.json(spot);
+
+  if (spot.ownerId !== userId) {
+    res.json(spot);
+  } else {
+    res.josn([]);
+  }
 });
 
 router.post('/:spotId/reviews', async (req, res, next) => {
@@ -324,7 +365,17 @@ router.delete('/:spotId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
