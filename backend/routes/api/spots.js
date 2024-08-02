@@ -4,9 +4,47 @@ const router = express.Router();
 const { Spot, Review, SpotImage, Sequelize, User } = require('../../db/models');
 
 router.get('/current', async (req, res, next) => {
-  console.log(req.user);
+  const resBody = [];
+  const id = req.user.id;
+  const userSpots = await Spot.findAll({
+    where: {
+      ownerId: id,
+    },
+    include: [
+      {
+        model: SpotImage,
+        where: {
+          preview: true,
+        },
+      },
+      {
+        model: Review,
+        attributes: ['stars'],
+      },
+    ],
+  });
 
-  res.json([]);
+  for (let spot of userSpots) {
+    spot = spot.toJSON();
+    let totalStars = 0;
+    spot.Reviews.forEach(review => {
+      totalStars += review.stars;
+    });
+
+    const avgRating = totalStars / spot.Reviews.length;
+    spot.avgRating = avgRating;
+
+    const previewImages = spot.SpotImages.find(image => image.preview);
+    spot.previewImage = previewImages.url;
+
+    delete spot.Reviews;
+    delete spot.SpotImages;
+    resBody.push(spot);
+  }
+
+  res.json({
+    Spots: [...resBody]
+  });
 });
 
 router.get('/:spotId', async (req, res, next) => {
@@ -97,6 +135,7 @@ router.get('/:spotId', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   try {
+    const resBody = [];
     const spots = await Spot.findAll({
       include: [
         {
@@ -108,24 +147,26 @@ router.get('/', async (req, res, next) => {
       ],
     });
 
-    for (const spot of spots) {
+    for (let spot of spots) {
+      spot = spot.toJSON();
       let totalStars = 0;
       spot.Reviews.forEach(review => {
         totalStars += review.stars;
       });
 
       const avgRating = totalStars / spot.Reviews.length;
-      spot.dataValues.avgRating = avgRating;
+      spot.avgRating = avgRating;
 
       const previewImages = spot.SpotImages.find(image => image.preview);
-      spot.dataValues.previewImage = previewImages.url;
+      spot.previewImage = previewImages.url;
 
-      spot.dataValues.Reviews = undefined;
-      spot.dataValues.SpotImages = undefined;
+      delete spot.Reviews;
+      delete spot.SpotImages;
+      resBody.push(spot);
     }
 
     res.json({
-      Spots: spots,
+      Spots: [...resBody],
     });
   } catch (err) {
     next(err);
@@ -134,17 +175,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({
       address,
