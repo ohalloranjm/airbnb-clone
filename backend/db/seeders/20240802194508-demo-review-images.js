@@ -14,7 +14,7 @@ module.exports = {
     for (let i = 0; i < 10; i++) {
       const review = reviews[i % 3];
       await review.createReviewImage({
-        url: `image-url-${i}`,
+        url: `fake-image-url-${i}`,
       });
     }
   },
@@ -26,6 +26,9 @@ module.exports = {
       reviewId: {
         [Op.in]: [1, 2, 3],
       },
+      url: {
+        [Op.startsWith]: 'fake-image-url-'
+      }
     });
   },
 };

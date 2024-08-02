@@ -1,5 +1,6 @@
 'use strict';
-const { SpotImage } = require('../models');
+
+const { Spot, SpotImage } = require('../models');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -8,40 +9,45 @@ if (process.env.NODE_ENV === 'production') {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
+    const spots =await Spot.findAll();
+    const spotIds = [];
+
+    spots.forEach(spot => {
+      spotIds.push(spot.id);
+    });
+
     const images = [
       {
-        spotId: 1,
-        url: 'image url',
-        preview: true
+        spotId: spotIds[0],
+        url: 'fake-image-1',
+        preview: true,
       },
       {
-        spotId: 3,
-        url: 'image url',
-        preview: true
+        spotId: spotIds[1],
+        url: 'fake-image-2',
+        preview: true,
       },
       {
-        spotId: 2,
-        url: 'image url',
-        preview: true
+        spotId: spotIds[2],
+        url: 'fake-image-3',
+        preview: true,
       },
-    ]
+    ];
 
     for (const image of images) {
-      await SpotImage.create(image)
+      await SpotImage.create(image);
     }
-
   },
 
-  async down (queryInterface, Sequelize) {
-    const Op = Sequelize.Op
+  async down(queryInterface, Sequelize) {
+    const Op = Sequelize.Op;
 
-    options.tableName = 'SpotImages'
+    options.tableName = 'SpotImages';
     await queryInterface.bulkDelete(options, {
-      url: 'image url',
-      spotId: {
-        [Op.in]: [1, 2, 3]
-      }
-    })
-  }
+      url: {
+        [Op.startsWith]: 'fake-image-'
+      },
+    });
+  },
 };
