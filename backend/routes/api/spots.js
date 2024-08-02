@@ -43,7 +43,7 @@ router.get('/current', async (req, res, next) => {
   }
 
   res.json({
-    Spots: [...resBody]
+    Spots: [...resBody],
   });
 });
 
@@ -173,9 +173,48 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.put('/:spotId', async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const ownerId = req.user.id;
+
+    const spot = await Spot.findByPk(spotId);
+
+    if (!spot)
+      return res.status(404).json({ message: "Spot couldn't be found" });
+
+    if (spot.ownerId !== ownerId) {
+      return res
+        .status(400)
+        .json({ message: 'Spot does not belong to current user' });
+    }
+
+    await spot.update(req.body);
+    await spot.save();
+
+    res.json(spot);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: err.message,
+      });
+    }
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
