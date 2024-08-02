@@ -12,6 +12,8 @@ const {
   User,
 } = require('../../db/models');
 
+const Op = Sequelize.Op;
+
 router.get('/:spotId/reviews', async (req, res) => {
   const { spotId } = req.params;
   const spot = await Spot.findByPk(spotId, {
@@ -112,35 +114,90 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       });
     }
 
-    for (const booking of spot.Bookings) {
-      const startYear = booking.startDate.getFullYear();
-      const startMonth = String(booking.startDate.getMonth() + 1).padStart(2, '0');
-      const startDay = String(booking.startDate.getDate()).padStart(2, '0')
-      const bookingStartDate = `${startYear}-${startMonth}-${startDay}`;
+    const conflicts = await Booking.findOne({
+      where: {
+        spotId,
+        [Op.not]: {
+          [Op.or]: [
+            {
+              endDate: {
+                [Op.lte]: req.body.startDate,
+              },
+            },
+            {
+              startDate: {
+                [Op.gte]: req.body.endDate,
+              },
+            },
+          ],
+        },
+        // [Op.or]: [
+        //   {
+        //     startDate: {
+        //       [Op.lte]: req.body.endDate,
+        //     },
+        //   },
+        //   {
+        //     endDate: {
+        //       [Op.gte]: req.body.startDate,
+        //     },
+        //   },
+        // ],
+      },
+    });
 
-      const endYear = booking.endDate.getFullYear();
-      const endMonth = String(booking.endDate.getMonth() + 1).padStart(2, '0');
-      const endDay = String(booking.endDate.getDate()).padStart(2, '0')
-      const bookingEndDate = `${endYear}-${endMonth}-${endDay}`;
+    if (conflicts) {
+      const startConflict = conflicts.startDate >= req.body.startDate;
+      const endConflict = conflicts.endDate <= req.body.endDate;
+      return res.status(403).json({
+        message: 'Sorry, this spot is already booked for the specified dates',
+        errors: {
+          startDate: startConflict
+            ? 'Start date conflicts with an existing booking'
+            : null,
+          endDate: endConflict
+            ? 'End date conflicts with an existing booking'
+            : null,
+        },
+      });
+    }
 
-      if (bookingStartDate <= req.body.startDate && bookingEndDate >= req.body.startDate) {
-        return res.status(403).json({
-          message: 'Sorry, this spot is already booked for the specified dates',
-          errors: {
-            startDate: 'Start date conflicts with an existing booking',
-          },
-        });
-      }
+    console.log(conflicts);
 
-      if (bookingStartDate <= req.body.endDate && bookingEndDate >= req.body.endDate) {
-        return res.status(403).json({
-          message: 'Sorry, this spot is already booked for the specified dates',
-          errors: {
-            endDate: 'End date conflicts with an existing booking',
-          },
-        });
-      }
-    };
+    // for (const booking of spot.Bookings) {
+    //   // const startYear = booking.startDate.getFullYear();
+    //   // const startMonth = String(booking.startDate.getMonth() + 1).padStart(2, '0');
+    //   // const startDay = String(booking.startDate.getDate()).padStart(2, '0')
+    //   // const bookingStartDate = `${startYear}-${startMonth}-${startDay}`;
+
+    //   // const endYear = booking.endDate.getFullYear();
+    //   // const endMonth = String(booking.endDate.getMonth() + 1).padStart(2, '0');
+    //   // const endDay = String(booking.endDate.getDate()).padStart(2, '0')
+    //   // const bookingEndDate = `${endYear}-${endMonth}-${endDay}`;
+
+    //   const reqStartDate = new Date(req.body.startDate);
+    //   const reqEndDate = new Date(req.body.endDate);
+
+    //   if(!(reqEndDate < booking.startDate ||))
+
+    //   // if (bookingStartDate <= req.body.startDate && bookingEndDate >= req.body.startDate) {
+    //   //   return res.status(403).json({
+    //   //     message: 'Sorry, this spot is already booked for the specified dates',
+    //   //     errors: {
+    //   //       startDate: 'Start date conflicts with an existing booking',
+    //   //     },
+    //   //   });
+    //   // }
+
+    //   // if (bookingStartDate <= req.body.endDate && bookingEndDate >= req.body.endDate) {
+    //   //   return res.status(403).json({
+    //   //     message: 'Sorry, this spot is already booked for the specified dates',
+    //   //     errors: {
+    //   //       endDate: 'End date conflicts with an existing booking',
+    //   //     },
+    //   //   });
+    //   // }
+    // };
 
     const newBooking = await Booking.create({
       ...req.body,
@@ -420,7 +477,17 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
