@@ -19,7 +19,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    preview: DataTypes.BOOLEAN
+    preview: {
+      type: DataTypes.BOOLEAN,
+      validate: {
+        async hasPreview(val) {
+          const previewImage = await SpotImage.findOne({
+            where: {
+              spotId: this.spotId,
+              preview: true
+            }
+          });
+
+          if (previewImage && val) {
+            throw new Error('Only one preview image allowed');
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'SpotImage',

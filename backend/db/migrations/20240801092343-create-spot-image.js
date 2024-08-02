@@ -8,44 +8,46 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('SpotImages', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      spotId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Spots'
+    await queryInterface.createTable(
+      'SpotImages',
+      {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER,
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        spotId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Spots',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+        url: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        preview: {
+          type: Sequelize.BOOLEAN,
+        },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
       },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      preview: {
-        type: Sequelize.BOOLEAN,
-        
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      }
-    },
-  options);
+      options,
+    );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'SpotImages'
+    options.tableName = 'SpotImages';
     await queryInterface.dropTable(options);
-  }
+  },
 };

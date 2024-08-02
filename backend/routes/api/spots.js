@@ -158,7 +158,7 @@ router.get('/', async (req, res, next) => {
       spot.avgRating = avgRating;
 
       const previewImages = spot.SpotImages.find(image => image.preview);
-      spot.previewImage = previewImages.url;
+      if (previewImages) spot.previewImage = previewImages.url;
 
       delete spot.Reviews;
       delete spot.SpotImages;
@@ -173,20 +173,54 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.post('/:spotId/images', async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const ownerId = req.user.id;
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId,
+      },
+      include: [
+        {
+          model: SpotImage,
+        },
+      ],
+    });
+
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    const newImage = await spot.createSpotImage(req.body);
+
+    res.status(201).json(newImage);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: err.message,
+      });
+    }
+  }
+});
+
 router.put('/:spotId', async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
 
-    const spot = await Spot.findByPk(spotId);
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId,
+      },
+    });
 
-    if (!spot)
+    if (!spot) {
       return res.status(404).json({ message: "Spot couldn't be found" });
-
-    if (spot.ownerId !== ownerId) {
-      return res
-        .status(400)
-        .json({ message: 'Spot does not belong to current user' });
     }
 
     await spot.update(req.body);
@@ -204,17 +238,7 @@ router.put('/:spotId', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({
       address,
