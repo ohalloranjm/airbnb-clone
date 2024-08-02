@@ -1,14 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-  Spot,
-  Review,
-  ReviewImage,
-  SpotImage,
-  Sequelize,
-  User,
-} = require('../../db/models');
+const { Spot, Review, ReviewImage, SpotImage, Sequelize, User } = require('../../db/models');
 const { json } = require('sequelize');
 
 router.get('/:spotId/reviews', async (req, res, next) => {
@@ -43,6 +36,12 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 router.post('/:spotId/reviews', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
   try {
     const { spotId } = req.params;
     const userId = req.user.id;
@@ -87,6 +86,12 @@ router.post('/:spotId/reviews', async (req, res, next) => {
 });
 
 router.get('/current', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
   const resBody = [];
   const id = req.user.id;
   const userSpots = await Spot.findAll({
@@ -216,6 +221,134 @@ router.get('/:spotId', async (req, res, next) => {
   }
 });
 
+router.post('/:spotId/images', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
+  try {
+    const { spotId } = req.params;
+    const ownerId = req.user.id;
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId,
+      },
+      include: [
+        {
+          model: SpotImage,
+        },
+      ],
+    });
+
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    const newImage = await spot.createSpotImage(req.body);
+
+    res.status(201).json(newImage);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: err.message,
+      });
+    }
+  }
+});
+
+router.put('/:spotId', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
+  try {
+    const { spotId } = req.params;
+    const ownerId = req.user.id;
+
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+        ownerId,
+      },
+    });
+
+    if (!spot) {
+      return res.status(404).json({ message: "Spot couldn't be found" });
+    }
+
+    await spot.update(req.body);
+    await spot.save();
+
+    res.json(spot);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: err.message,
+      });
+    }
+  }
+});
+
+router.delete('/:spotId', async (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: 'Authentication required',
+    });
+  }
+
+  const { spotId } = req.params;
+  const ownerId = req.user.id;
+
+  const spot = await Spot.findOne({
+    where: {
+      id: spotId,
+      ownerId,
+    },
+  });
+
+  if (!spot) {
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  }
+
+  await spot.destroy();
+  res.json({
+    message: 'Successfully deleted',
+  });
+});
+
+router.post('/', async (req, res, next) => {
+  try {
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    const newSpot = await Spot.create({
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    });
+
+    res.status(201).json(newSpot);
+  } catch (err) {
+    if (err instanceof Sequelize.ValidationError) {
+      res.status(400).json({
+        message: err.message,
+      });
+    }
+  }
+});
+
 router.get('/', async (req, res, next) => {
   try {
     const resBody = [];
@@ -253,128 +386,6 @@ router.get('/', async (req, res, next) => {
     });
   } catch (err) {
     next(err);
-  }
-});
-
-router.post('/:spotId/images', async (req, res, next) => {
-  try {
-    const { spotId } = req.params;
-    const ownerId = req.user.id;
-    const spot = await Spot.findOne({
-      where: {
-        id: spotId,
-        ownerId,
-      },
-      include: [
-        {
-          model: SpotImage,
-        },
-      ],
-    });
-
-    if (!spot) {
-      return res.status(404).json({
-        message: "Spot couldn't be found",
-      });
-    }
-
-    const newImage = await spot.createSpotImage(req.body);
-
-    res.status(201).json(newImage);
-  } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: err.message,
-      });
-    }
-  }
-});
-
-router.put('/:spotId', async (req, res, next) => {
-  try {
-    const { spotId } = req.params;
-    const ownerId = req.user.id;
-
-    const spot = await Spot.findOne({
-      where: {
-        id: spotId,
-        ownerId,
-      },
-    });
-
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    await spot.update(req.body);
-    await spot.save();
-
-    res.json(spot);
-  } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: err.message,
-      });
-    }
-  }
-});
-
-router.delete('/:spotId', async (req, res, next) => {
-  try {
-    const { spotId } = req.params;
-    const ownerId = req.user.id;
-
-    const spot = await Spot.findOne({
-      where: {
-        id: spotId,
-        ownerId,
-      },
-    });
-
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    await spot.destroy();
-    res.json({
-      message: 'Successfully deleted',
-    });
-  } catch (err) {}
-});
-
-router.post('/', async (req, res, next) => {
-  try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-
-    const newSpot = await Spot.create({
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    });
-
-    res.status(201).json(newSpot);
-  } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: err.message,
-      });
-    }
   }
 });
 
