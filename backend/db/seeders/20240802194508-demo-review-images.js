@@ -27,8 +27,8 @@ module.exports = {
         [Op.in]: [1, 2, 3],
       },
       url: {
-        [Op.startsWith]: 'fake-image-url-'
-      }
+        [Op.startsWith]: 'fake-image-url-',
+      },
     });
   },
 };

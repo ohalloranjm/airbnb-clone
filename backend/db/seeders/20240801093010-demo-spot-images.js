@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const spots =await Spot.findAll();
+    const spots = await Spot.findAll();
     const spotIds = [];
 
     spots.forEach(spot => {
@@ -33,6 +33,16 @@ module.exports = {
         url: 'fake-image-3',
         preview: true,
       },
+      {
+        spotId: spotIds[3],
+        url: 'fake-image-4',
+        preview: true,
+      },
+      {
+        spotId: spotIds[4],
+        url: 'fake-image-5',
+        preview: true,
+      },
     ];
 
     for (const image of images) {
@@ -46,7 +56,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     await queryInterface.bulkDelete(options, {
       url: {
-        [Op.startsWith]: 'fake-image-'
+        [Op.startsWith]: 'fake-image-',
       },
     });
   },
