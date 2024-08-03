@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Spot.belongsTo(models.User, { foreignKey: 'ownerId' });
       Spot.hasMany(models.Booking, { foreignKey: 'spotId' });
-      Spot.hasMany(models.Review, {
-        foreignKey: 'spotId'
-      })
+      Spot.hasMany(models.Review, { foreignKey: 'spotId' });
+      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' });
     }
   }
   Spot.init(
@@ -20,50 +19,102 @@ module.exports = (sequelize, DataTypes) => {
       address: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: [true],
+            msg: 'Street address is required',
+          },
+        },
       },
       city: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: [true],
+            msg: 'Street address is required',
+          },
+        },
       },
       state: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: [true],
+            msg: 'State is required',
+          },
+        },
       },
       country: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: [true],
+            msg: 'Country is required',
+          },
+        },
       },
       lat: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
-          min: -90,
-          max: 90,
+          min: {
+            args: [-90],
+            msg: 'Latitude must be within -90 and 90',
+          },
+          max: {
+            args: [90],
+            msg: 'Latitude must be within -90 and 90',
+          },
         },
       },
       lng: {
         type: DataTypes.DECIMAL,
         allowNull: false,
         validate: {
-          min: -180,
-          max: 180,
+          min: {
+            args: [-180],
+            msg: 'Longitude must be within -180 and 180',
+          },
+          max: {
+            args: [180],
+            msg: 'Longitude must be within -180 and 180',
+          },
         },
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [1, 49],
+          notEmpty: {
+            args: [true],
+            msg: 'Name cannot be empty',
+          },
+          len: {
+            args: [0, 49],
+            msg: 'Name must be less than 50 characters',
+          },
         },
       },
       description: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notNull: {
+            args: [true],
+            msg: 'Description is required',
+          },
+        },
       },
       price: {
         type: DataTypes.DECIMAL,
         validate: {
-          min: 0.01,
+          min: {
+            args: [0.01],
+            msg: 'Price per day must be a positive number',
+          },
         },
       },
       ownerId: {
