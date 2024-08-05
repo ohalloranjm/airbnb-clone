@@ -104,7 +104,6 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
     const review = await Review.findOne({
       where: {
-        userId,
         id: reviewId,
       },
     });
@@ -125,7 +124,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     res.json({
       message: 'Successfully deleted',
     });
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });

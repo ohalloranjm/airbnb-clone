@@ -477,7 +477,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     });
   }
 
-  if (spot.userId !== userId) {
+  if (spot.ownerId !== userId) {
     return res.status(403).json({
       message: 'Forbidden',
     });
