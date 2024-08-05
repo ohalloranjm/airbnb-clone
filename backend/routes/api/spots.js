@@ -49,8 +49,8 @@ router.get('/:spotId/reviews', async (req, res) => {
 });
 
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
-  const userId = req.user.id;
   const { spotId } = req.params;
+  const userId = req.user.id;
 
   const spot = await Spot.findOne({
     where: { id: spotId },
@@ -479,6 +479,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       description,
       price,
     } = req.body;
+    const ownerId = req.user.id;
 
     const newSpot = await Spot.create({
       address,
@@ -490,6 +491,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       name,
       description,
       price,
+      ownerId
     });
 
     res.status(201).json(newSpot);

@@ -27,7 +27,7 @@ if (!isProduction) {
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: 'cross-origin',
-  }),
+  })
 );
 
 // Set the _csrf token and create req.csrfToken method
@@ -38,7 +38,7 @@ app.use(
       sameSite: isProduction && 'Lax',
       httpOnly: true,
     },
-  }),
+  })
 );
 
 app.use(routes); // Connect all the routes
@@ -59,7 +59,7 @@ app.use((err, _req, _res, next) => {
     for (let error of err.errors) {
       errors[error.path] = error.message;
     }
-    err.title = 'Validation error';
+    err.title = isProduction ? 'Validation error' : undefined;
     err.errors = errors;
     if (!err.status) err.status = 400;
   }
@@ -70,7 +70,12 @@ app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
   console.error(err);
   res.json({
-    // title: err.title || 'Server Error',
+    title:
+      isProduction ?
+        err.title ?
+          err.title
+        : 'Server Error'
+      : undefined,
     message: err.title,
     errors: err.errors,
     stack: isProduction ? null : err.stack,
