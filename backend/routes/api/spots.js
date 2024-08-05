@@ -124,6 +124,29 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         message: 'Forbidden',
       });
     }
+    const today = new Date();
+
+    if (startDate.getTime() >= endDate.getTime()) {
+      return res.status(403).json({
+        message: 'End date cannot be on or before start date',
+      });
+    }
+
+    if (startDate.getTime() <= today.getTime()) {
+      return res.status(400).json({
+        errors: {
+          startDate: 'Start date cannot be in the past',
+        },
+      });
+    }
+
+    if (endDate.getTime() <= startDate.getTime()) {
+      return res.status(400).json({
+        errors: {
+          startDate: 'End date overlaps with start date',
+        },
+      });
+    }
 
     const conflict = await Booking.findOne({
       where: {
@@ -491,7 +514,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       name,
       description,
       price,
-      ownerId
+      ownerId,
     });
 
     res.status(201).json(newSpot);

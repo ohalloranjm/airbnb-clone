@@ -43,18 +43,16 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
   if (startDate.getTime() <= today.getTime()) {
     return res.status(400).json({
-      message: 'Bad Request',
       errors: {
-        startDate: 'startDate cannot be in the past',
+        startDate: 'Start date cannot be in the past',
       },
     });
   }
 
   if (endDate.getTime() <= startDate.getTime()) {
     return res.status(400).json({
-      message: 'Bad Request',
       errors: {
-        startDate: 'endDate cannot overlap with startDate',
+        endDate: 'End date overlaps with start date',
       },
     });
   }
@@ -103,9 +101,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     const startDateOverlap = startDate >= conflict.startDate;
 
     if (endDateOverlap && !startDateOverlap) {
-      resObj.errors.startConflict = undefined;
+      delete resObj.errors.startConflict;
     } else if (startDateOverlap && !endDateOverlap) {
-      resObj.errors.endConflict = undefined;
+      delete resObj.errors.endConflict;
     }
 
     return res.status(403).json(resObj);
