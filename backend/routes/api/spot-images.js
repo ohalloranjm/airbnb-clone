@@ -4,12 +4,8 @@ const { requireAuth } = require('../../utils/auth');
 
 const {
   Spot,
-  Booking,
-  Review,
-  ReviewImage,
   SpotImage,
   Sequelize,
-  User,
 } = require('../../db/models');
 
 const Op = Sequelize.Op;
@@ -34,7 +30,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
   const userId = req.user.id;
   if (image.Spot.ownerId !== userId) {
     return res.status(403).json({
-      message: 'forbidden',
+      message: 'Forbidden',
     });
   }
 
