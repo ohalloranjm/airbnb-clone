@@ -16,14 +16,7 @@ const Op = Sequelize.Op;
 
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
   const { imageId } = req.params;
-  const image = await SpotImage.findOne({
-    where: {
-      id: imageId,
-    },
-    include: {
-      model: Spot,
-    },
-  });
+  const image = await SpotImage.findByPk(imageId);
 
   if (!image) {
     return res.status(404).json({
@@ -31,8 +24,9 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     });
   }
 
+  const spot = await Spot.findByPk(image.spotId);
   const userId = req.user.id;
-  if (image.Spot.ownerId !== userId) {
+  if (spot.ownerId !== userId) {
     return res.status(403).json({
       message: 'forbidden',
     });
