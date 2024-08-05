@@ -67,12 +67,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     ],
   });
 
-  if (!spot) {
-    return res.status(404).json({
-      message: "Spot couldn't be found",
-    });
-  }
-
   if (userId === spot.ownerId) {
     res.json({
       Bookings: spot.Bookings,
