@@ -148,8 +148,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       const resObj = {
         message: 'Sorry, this spot is already booked for the specified dates',
         errors: {
-          startConflict: 'Start date conflicts with an existing booking',
-          endConflict: 'End date conflicts with an existing booking',
+          startDate: 'Start date conflicts with an existing booking',
+          endDate: 'End date conflicts with an existing booking',
         },
       };
 
@@ -157,9 +157,9 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
       const startDateOverlap = startDate >= conflict.startDate;
 
       if (endDateOverlap && !startDateOverlap) {
-        resObj.errors.startConflict = undefined;
+        resObj.errors.startDate = undefined;
       } else if (startDateOverlap && !endDateOverlap) {
-        resObj.errors.endConflict = undefined;
+        resObj.errors.endDate = undefined;
       }
 
       return res.status(403).json(resObj);

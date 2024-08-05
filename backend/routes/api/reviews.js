@@ -46,7 +46,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {
       res.status(400).json({
-        message: 'Bad request',
+        message: 'Bad Request',
         errors: {
           [err.errors[0].path]: err.errors[0].message,
         },
