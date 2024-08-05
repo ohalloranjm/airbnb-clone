@@ -15,6 +15,7 @@ const Op = Sequelize.Op;
 
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
   const { bookingId } = req.params;
+  const userId = req.user.id;
   const booking = await Booking.findByPk(bookingId);
 
   if (!booking) {
@@ -23,12 +24,17 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     });
   }
 
+  if (userId !== booking.userId) {
+    return res.status(403).json({
+      message: 'Forbidden',
+    });
+  }
+
   let { startDate, endDate } = req.body;
   startDate = new Date(startDate);
   endDate = new Date(endDate);
   const today = new Date();
 
-  // console.log(today.getTime() > booking.endDate.getTime());
   if (today.getTime() > booking.endDate.getTime()) {
     return res.status(403).json({
       message: "Past bookings can't be modified",
@@ -130,7 +136,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   const validUser = booking.userId === userId;
   const validOwner = booking.Spot.ownerId === userId;
 
-  console.log(validUser, validOwner);
   if (!(validUser || validOwner)) {
     return res.status(403).json({
       message: 'Forbidden',

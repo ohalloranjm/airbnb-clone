@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage, Sequelize } = require('../../db/models');
+
+router.use(handleValidationErrors);
 
 router.get('/current', requireAuth, async (req, res, next) => {
   const userId = req.user.id;
@@ -16,14 +19,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
 });
 
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
-
   try {
     const { reviewId } = req.params;
     const userId = req.user.id;
     const review = await Review.findOne({
       where: {
         id: reviewId,
-        userId,
       },
       include: [{ model: ReviewImage }],
     });
@@ -31,6 +32,12 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     if (!review) {
       return res.status(404).json({
         message: "Review couldn't be found",
+      });
+    }
+
+    if (review.userId !== userId) {
+      return res.status(403).json({
+        message: 'Forbidden',
       });
     }
 
@@ -44,14 +51,15 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
     res.status(201).json(newImage);
   } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: 'Bad Request',
-        errors: {
-          [err.errors[0].path]: err.errors[0].message,
-        },
-      });
-    }
+    // if (err instanceof Sequelize.ValidationError) {
+    //   res.status(400).json({
+    //     message: 'Bad Request',
+    //     errors: {
+    //       [err.errors[0].path]: err.errors[0].message,
+    //     },
+    //   });
+    // }
+    next(err);
   }
 });
 
@@ -59,10 +67,45 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
   try {
     const { reviewId } = req.params;
     const userId = req.user.id;
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review couldn't be found",
+      });
+    }
+
+    if (review.userId !== userId) {
+      return res.status(403).json({
+        message: 'Forbidden',
+      });
+    }
+
+    await review.update(req.body);
+    await review.save();
+
+    res.json(review);
+  } catch (err) {
+    // if (err instanceof Sequelize.ValidationError) {
+    //   res.status(400).json({
+    //     message: 'Bad Request',
+    //     errors: {
+    //       [err.errors[0].path]: err.errors[0].message,
+    //     },
+    //   });
+    // }
+    next(err);
+  }
+});
+
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+  try {
+    const { reviewId } = req.params;
+    const userId = req.user.id;
     const review = await Review.findOne({
       where: {
-        id: reviewId,
         userId,
+        id: reviewId,
       },
     });
 
@@ -72,42 +115,19 @@ router.put('/:reviewId', requireAuth, async (req, res, next) => {
       });
     }
 
-    await review.update(req.body);
-    await review.save();
-
-    res.json(review);
-  } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: 'Bad Request',
-        errors: {
-          [err.errors[0].path]: err.errors[0].message,
-        },
+    if (review.userId !== userId) {
+      return res.status(403).json({
+        message: 'Forbidden',
       });
     }
-  }
-});
 
-router.delete('/:reviewId', requireAuth, async (req, res, next) => {
-  const { reviewId } = req.params;
-  const userId = req.user.id;
-  const review = await Review.findOne({
-    where: {
-      userId,
-      id: reviewId,
-    },
-  });
-
-  if (!review) {
-    return res.status(404).json({
-      message: "Review couldn't be found",
+    await review.destroy();
+    res.json({
+      message: 'Successfully deleted',
     });
+  } catch(err) {
+    next(err);
   }
-
-  await review.destroy();
-  res.json({
-    message: 'Successfully deleted',
-  });
 });
 
 module.exports = router;
