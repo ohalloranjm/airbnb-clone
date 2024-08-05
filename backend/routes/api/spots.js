@@ -237,9 +237,6 @@ router.get('/current', requireAuth, async (req, res) => {
     include: [
       {
         model: SpotImage,
-        where: {
-          preview: true,
-        },
       },
       {
         model: Review,
@@ -259,7 +256,7 @@ router.get('/current', requireAuth, async (req, res) => {
     spot.avgRating = avgRating;
 
     const previewImages = spot.SpotImages.find(image => image.preview);
-    spot.previewImage = previewImages.url;
+    if (previewImages) spot.previewImage = previewImages.url;
 
     delete spot.Reviews;
     delete spot.SpotImages;
