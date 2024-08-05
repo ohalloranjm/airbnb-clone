@@ -477,6 +477,22 @@ router.post('/', requireAuth, async (req, res) => {
 router.get('/', async (req, res, next) => {
   try {
     const resBody = [];
+    let { page, size } = req.query;
+
+    page =
+      page ?
+        page <= 0 ?
+          1
+        : Number(page)
+      : 1;
+
+    size =
+      size ?
+        size <= 0 || size > 20 ?
+          20
+        : Number(size)
+      : 20;
+
     const spots = await Spot.findAll({
       include: [
         {
@@ -508,6 +524,8 @@ router.get('/', async (req, res, next) => {
 
     res.json({
       Spots: [...resBody],
+      page,
+      size,
     });
   } catch (err) {
     next(err);
