@@ -534,69 +534,28 @@ router.get('/', async (req, res, next) => {
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
       req.query;
 
+    page = Number(page) || 1;
+    size = Number(size) || 20;
+
     const errors = {};
-    let error = false;
 
-    if ('page' in req.params) {
-      if (isNaN(page) || +page < 1) {
-        error = true;
-        errors.page = 'Page must be greater than or equal to 1';
-      }
-    }
+    if (page < 1) errors.page = 'Page must be greater than or equal to 1';
+    if (size < 1 || size > 20) errors.size = 'Size must be between 1 and 20';
+    if (minLat && isNaN(minLat)) errors.minLat = 'Minimum latitude is invalid';
+    if (maxLat && isNaN(maxLat)) errors.maxLat = 'Maximum latitude is invalid';
+    if (minLng && isNaN(minLng)) errors.minLng = 'Minimum longitude is invalid';
+    if (maxLng && isNaN(maxLng)) errors.maxLng = 'Maximum longitude is invalid';
+    if (minPrice && (isNaN(minPrice) || +minPrice < 0))
+      errors.minPrice = 'Minimum price must be greater than or equal to 0';
+    if (maxPrice && (isNaN(maxPrice) || +maxPrice < 0))
+      errors.maxPrice = 'Maximum price must be greater than or equal to 0';
 
-    if ('size' in req.params) {
-      if (isNaN(size) || +size < 1 || +size > 20) {
-        error = true;
-        errors.size = 'Size must be between 1 and 20';
-      }
-    }
-
-    if ('minLat' in req.params) {
-      if (isNaN(minLat)) {
-        error = true;
-        errors.minLat = 'Minimum latitude is invalid';
-      }
-    }
-    if ('maxLat' in req.params) {
-      if (isNaN(maxLat)) {
-        error = true;
-        errors.maxLat = 'Maximum latitude is invalid';
-      }
-    }
-    if ('minLng' in req.params) {
-      if (isNaN(minLng)) {
-        error = true;
-        errors.minLng = 'Minimum longitude is invalid';
-      }
-    }
-    if ('maxLng' in req.params) {
-      if (isNaN(maxLng)) {
-        error = true;
-        errors.maxLng = 'Maximum longitude is invalid';
-      }
-    }
-    if ('minPrice' in req.params) {
-      if (isNaN(minPrice) || +minPrice < 0) {
-        error = true;
-        errors.minPrice = 'Minimum price must be greater than or equal to 0';
-      }
-    }
-    if ('maxPrice' in req.params) {
-      if (isNaN(maxPrice) || +maxPrice < 0) {
-        error = true;
-        errors.maxPrice = 'Maximum price must be greater than or equal to 0';
-      }
-    }
-
-    if (error) {
+    if (Object.keys(errors).length) {
       return res.status(400).json({
         message: 'Bad Request',
         errors,
       });
     }
-
-    if (!page) page = 1;
-    if (!size) size = 20;
 
     const where = {};
 
