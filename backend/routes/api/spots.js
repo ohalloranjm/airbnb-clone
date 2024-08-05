@@ -130,20 +130,39 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
               [Op.between]: [startDate, endDate],
             },
           },
+          {
+            [Op.and]: {
+              startDate: {
+                [Op.lte]: startDate,
+              },
+              endDate: {
+                [Op.gte]: endDate,
+              },
+            },
+          },
         ],
       },
     });
 
     if (conflict) {
-      const startConflict = conflict.startDate <= startDate;
-      const endConflict = conflict.endDate >= endDate;
-      return res.status(403).json({
+      const resObj = {
         message: 'Sorry, this spot is already booked for the specified dates',
         errors: {
-          startDate: startConflict ? 'Start date conflicts with an existing booking' : null,
-          endDate: endConflict ? 'End date conflicts with an existing booking' : null,
+          startDate: 'Start date conflicts with an existing booking',
+          endDate: 'End date conflicts with an existing booking',
         },
-      });
+      };
+
+      const endDateOverlap = endDate <= conflict.endDate;
+      const startDateOverlap = startDate >= conflict.startDate;
+
+      if (endDateOverlap && !startDateOverlap) {
+        resObj.errors.startDate = undefined;
+      } else if (startDateOverlap && !endDateOverlap) {
+        resObj.errors.endDate = undefined;
+      }
+
+      return res.status(403).json(resObj);
     }
 
     const newBooking = await Booking.create({
@@ -218,9 +237,6 @@ router.get('/current', requireAuth, async (req, res) => {
     include: [
       {
         model: SpotImage,
-        where: {
-          preview: true,
-        },
       },
       {
         model: Review,
@@ -240,7 +256,7 @@ router.get('/current', requireAuth, async (req, res) => {
     spot.avgRating = avgRating;
 
     const previewImages = spot.SpotImages.find(image => image.preview);
-    spot.previewImage = previewImages.url;
+    if (previewImages) spot.previewImage = previewImages.url;
 
     delete spot.Reviews;
     delete spot.SpotImages;
@@ -424,7 +440,17 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const {
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price,
+    } = req.body;
 
     const newSpot = await Spot.create({
       address,
