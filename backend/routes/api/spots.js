@@ -259,6 +259,46 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
   }
 });
 
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+  try {
+    const { spotId } = req.params;
+    const userId = req.user.id;
+    const spot = await Spot.findOne({
+      where: {
+        id: spotId,
+      },
+      include: [
+        {
+          model: SpotImage,
+        },
+      ],
+    });
+
+    if (!spot) {
+      return res.status(404).json({
+        message: "Spot couldn't be found",
+      });
+    }
+
+    if (spot.ownerId !== userId) {
+      return res.status(403).json({
+        message: 'Forbidden',
+      });
+    }
+
+    const newImage = await spot.createSpotImage(req.body);
+
+    res.status(201).json(newImage);
+  } catch (err) {
+    // if (err instanceof Sequelize.ValidationError) {
+    //   res.status(400).json({
+    //     message: err.message,
+    //   });
+    // }
+    next(err);
+  }
+});
+
 router.get('/current', requireAuth, async (req, res) => {
   const resBody = [];
   const id = req.user.id;
@@ -298,46 +338,6 @@ router.get('/current', requireAuth, async (req, res) => {
   res.json({
     Spots: [...resBody],
   });
-});
-
-router.post('/:spotId/images', requireAuth, async (req, res, next) => {
-  try {
-    const { spotId } = req.params;
-    const userId = req.user.id;
-    const spot = await Spot.findOne({
-      where: {
-        id: spotId,
-      },
-      include: [
-        {
-          model: SpotImage,
-        },
-      ],
-    });
-
-    if (!spot) {
-      return res.status(404).json({
-        message: "Spot couldn't be found",
-      });
-    }
-
-    if (spot.ownerId !== userId) {
-      return res.status(403).json({
-        message: 'Forbidden',
-      });
-    }
-
-    const newImage = await spot.createSpotImage(req.body);
-
-    res.status(201).json(newImage);
-  } catch (err) {
-    // if (err instanceof Sequelize.ValidationError) {
-    //   res.status(400).json({
-    //     message: err.message,
-    //   });
-    // }
-    next(err);
-  }
 });
 
 router.get('/:spotId', async (req, res, next) => {
