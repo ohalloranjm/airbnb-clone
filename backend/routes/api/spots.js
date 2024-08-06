@@ -127,13 +127,17 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const today = new Date();
 
     if (startDate.getTime() >= endDate.getTime()) {
-      return res.status(403).json({
-        message: 'End date cannot be on or before start date',
+      return res.status(400).json({
+        message: 'Bad Request',
+        errors: {
+          endDate: 'End date cannot be on or before start date',
+        },
       });
     }
 
     if (startDate.getTime() <= today.getTime()) {
       return res.status(400).json({
+        message: 'Bad Request',
         errors: {
           startDate: 'Start date cannot be in the past',
         },
