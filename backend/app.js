@@ -75,10 +75,12 @@ app.use((err, _req, _res, next) => {
 
   // duplicate username/email signup
   if (err.errors && err.errors.email === 'email must be unique') {
+    err.title = 'User already exists';
     err.errors.email = 'User with that email already exists';
     err.status = 500;
   }
   if (err.errors && err.errors.username === 'username must be unique') {
+    err.title = 'User already exists';
     err.errors.username = 'User with that username already exists';
     err.status = 500;
   }
