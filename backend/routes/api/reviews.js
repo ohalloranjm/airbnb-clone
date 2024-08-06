@@ -3,7 +3,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
 
-const { Review, ReviewImage, Sequelize } = require('../../db/models');
+const { Review, ReviewImage } = require('../../db/models');
 
 router.use(handleValidationErrors);
 

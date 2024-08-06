@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const { Review, ReviewImage } = require('../../db/models');
+
+router.use(handleValidationErrors);
 
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
   const { imageId } = req.params;

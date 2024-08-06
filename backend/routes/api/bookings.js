@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
+const { handleValidationErrors } = require('../../utils/validation');
 
-const {
-  Spot,
-  Review,
-  ReviewImage,
-  SpotImage,
-  Sequelize,
-  User,
-  Booking,
-} = require('../../db/models');
+const { Spot, SpotImage, Sequelize, Booking } = require('../../db/models');
+
 const Op = Sequelize.Op;
+
+router.use(handleValidationErrors);
 
 router.put('/:bookingId', requireAuth, async (req, res, next) => {
   const { bookingId } = req.params;
