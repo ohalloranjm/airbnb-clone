@@ -220,7 +220,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const userId = req.user.id;
@@ -442,7 +442,7 @@ router.get('/:spotId', async (req, res, next) => {
   }
 });
 
-router.put('/:spotId', requireAuth, async (req, res) => {
+router.put('/:spotId', requireAuth, async (req, res, next) => {
   try {
     const { spotId } = req.params;
     const ownerId = req.user.id;
