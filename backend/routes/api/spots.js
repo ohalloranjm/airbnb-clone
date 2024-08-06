@@ -382,6 +382,8 @@ router.get('/:spotId', async (req, res, next) => {
 
       const avgRating = totalStars / spot.Reviews.length;
       spot.avgStarRating = avgRating;
+    } else {
+      spot.avgStarRating = null;
     }
 
     spot.Owner = spot.User;
