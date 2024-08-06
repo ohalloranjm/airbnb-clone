@@ -43,6 +43,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
   if (startDate.getTime() <= today.getTime()) {
     return res.status(400).json({
+      message: 'Bad Request',
       errors: {
         startDate: 'Start date cannot be in the past',
       },
@@ -51,6 +52,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
   if (endDate.getTime() <= startDate.getTime()) {
     return res.status(400).json({
+      message: 'Bad Request',
       errors: {
         endDate: 'End date overlaps with start date',
       },
