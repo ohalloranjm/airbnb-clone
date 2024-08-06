@@ -66,19 +66,39 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
+// patch job for production error codes & responses
+app.use((err, _req, _res, next) => {
+  // AUTH required 401 unauthorized
+  if ((err.title === 'Authentication required') & (err.status === 401)) {
+    err.errors = undefined;
+  }
+
+  // duplicate username/email signup
+  if (err.errors && err.errors.email === 'email must be unique') {
+    err.errors.email = 'User with that email already exists';
+    err.status = 500;
+  }
+  if (err.errors && err.errors.username === 'username must be unique') {
+    err.errors.username = 'User with that username already exists';
+    err.status = 500;
+  }
+
+  // login failed
+  if (err.title === 'Login failed' && err.status === 401) {
+    err.title = 'Invalid credentials';
+    err.errors = undefined;
+  }
+
+  next(err);
+});
+
 app.use((err, _req, res, _next) => {
   res.status(err.status || 500);
-  console.error(err);
   res.json({
-    title:
-      !isProduction ?
-        err.title ?
-          err.title
-        : 'Server Error'
-      : undefined,
+    title: !isProduction ? (err.title ? err.title : 'Server Error') : undefined,
     message: err.title,
     errors: err.errors,
-    stack: isProduction ? null : err.stack,
+    stack: isProduction ? undefined : err.stack,
   });
 });
 
