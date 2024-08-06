@@ -459,11 +459,12 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     res.json(spot);
   } catch (err) {
-    if (err instanceof Sequelize.ValidationError) {
-      res.status(400).json({
-        message: err.message,
-      });
-    }
+    // if (err instanceof Sequelize.ValidationError) {
+    //   res.status(400).json({
+    //     message: err.message,
+    //   });
+    // }
+    next(err);
   }
 });
 
