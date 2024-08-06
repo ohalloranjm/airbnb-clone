@@ -69,7 +69,7 @@ app.use((err, _req, _res, next) => {
 // patch job for production error codes & responses
 app.use((err, _req, _res, next) => {
   // AUTH required 401 unauthorized
-  if ((err.title === 'Authentication required') & (err.status === 401)) {
+  if (err.title === 'Authentication required' && err.status === 401) {
     err.errors = undefined;
   }
 
@@ -87,6 +87,15 @@ app.use((err, _req, _res, next) => {
   if (err.title === 'Login failed' && err.status === 401) {
     err.title = 'Invalid credentials';
     err.errors = undefined;
+  }
+
+  // edit review invalid body
+  if (
+    err.errors &&
+    (err.errors.review === 'Review text is required' ||
+      err.errors.stars === 'Stars must be an integer from 1 to 5')
+  ) {
+    err.title = 'Bad Request';
   }
 
   next(err);
