@@ -103,9 +103,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     const startDateOverlap = startDate >= conflict.startDate;
 
     if (endDateOverlap && !startDateOverlap) {
-      delete resObj.errors.startConflict;
+      delete resObj.errors.startDate;
     } else if (startDateOverlap && !endDateOverlap) {
-      delete resObj.errors.endConflict;
+      delete resObj.errors.endDate;
     }
 
     return res.status(403).json(resObj);
