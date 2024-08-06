@@ -542,17 +542,14 @@ router.get('/', async (req, res, next) => {
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
       req.query;
 
-    page = Number(page) || 1;
-    size = Number(size) || 20;
-
     const errors = {};
 
     if (page < 1) errors.page = 'Page must be greater than or equal to 1';
     if (size < 1 || size > 20) errors.size = 'Size must be between 1 and 20';
-    if (minLat && isNaN(minLat)) errors.minLat = 'Minimum latitude is invalid';
-    if (maxLat && isNaN(maxLat)) errors.maxLat = 'Maximum latitude is invalid';
-    if (minLng && isNaN(minLng)) errors.minLng = 'Minimum longitude is invalid';
-    if (maxLng && isNaN(maxLng)) errors.maxLng = 'Maximum longitude is invalid';
+    if (minLat && (isNaN(minLat) || +minLat < -90 || +minLat > 90)) errors.minLat = 'Minimum latitude is invalid';
+    if (maxLat && (isNaN(maxLat) || +maxLat < -90 || +maxLat > 90)) errors.maxLat = 'Maximum latitude is invalid';
+    if (minLng && (isNaN(minLng)|| +maxLng < -180 || +maxLng > 180)) errors.minLng = 'Minimum longitude is invalid';
+    if (maxLng && (isNaN(maxLng)|| +maxLng < -180 || +maxLng > 180)) errors.maxLng = 'Maximum longitude is invalid';
     if (minPrice && (isNaN(minPrice) || +minPrice < 0))
       errors.minPrice = 'Minimum price must be greater than or equal to 0';
     if (maxPrice && (isNaN(maxPrice) || +maxPrice < 0))
@@ -564,6 +561,9 @@ router.get('/', async (req, res, next) => {
         errors,
       });
     }
+
+    page = Number(page) || 1;
+    size = Number(size) || 20;
 
     const where = {};
 
