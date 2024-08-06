@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
             args: [true],
             msg: 'Street address is required',
           },
+          notEmpty: {
+            args: [true],
+            msg: 'Street address is required',
+          },
         },
       },
       city: {
@@ -32,7 +36,11 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notNull: {
             args: [true],
-            msg: 'Street address is required',
+            msg: 'City is required',
+          },
+          notEmpty: {
+            args: [true],
+            msg: 'City is required',
           },
         },
       },
@@ -44,6 +52,10 @@ module.exports = (sequelize, DataTypes) => {
             args: [true],
             msg: 'State is required',
           },
+          notEmpty: {
+            args: [true],
+            msg: 'State is required',
+          },
         },
       },
       country: {
@@ -51,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
+            args: [true],
+            msg: 'Country is required',
+          },
+          notEmpty: {
             args: [true],
             msg: 'Country is required',
           },
@@ -90,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: {
             args: [true],
-            msg: 'Name cannot be empty',
+            msg: 'Name is required',
           },
           len: {
             args: [0, 49],
@@ -103,6 +119,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
+            args: [true],
+            msg: 'Description is required',
+          },
+          notEmpty: {
             args: [true],
             msg: 'Description is required',
           },
@@ -124,7 +144,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Spot',
-    },
+    }
   );
   return Spot;
 };
