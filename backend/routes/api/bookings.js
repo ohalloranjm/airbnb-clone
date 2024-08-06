@@ -111,6 +111,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     return res.status(403).json(resObj);
   }
 
+  await booking.update(req.body);
+  await booking.save();
+
   res.json(booking);
 });
 
