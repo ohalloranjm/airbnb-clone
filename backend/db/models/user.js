@@ -28,14 +28,28 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: true,
+          notEmpty: {
+            args: [true],
+            msg: 'First name is required',
+          },
+          notNull: {
+            args: [true],
+            msg: 'First name is required',
+          },
         },
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: true,
+          notEmpty: {
+            args: [true],
+            msg: 'First name is required',
+          },
+          notNull: {
+            args: [true],
+            msg: 'Last name is required',
+          },
         },
       },
       email: {
