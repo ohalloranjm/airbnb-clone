@@ -638,6 +638,7 @@ router.get('/', async (req, res, next) => {
 
       spot.lng = Number(spot.lng);
       spot.lat = Number(spot.lat);
+      spot.price = Number(spot.price);
 
       delete spot.Reviews;
       delete spot.SpotImages;
