@@ -3,7 +3,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { handleValidationErrors } = require('../../utils/validation');
 
-const { Review, ReviewImage } = require('../../db/models');
+const { Review, ReviewImage, User, Spot } = require('../../db/models');
 
 router.use(handleValidationErrors);
 
@@ -13,6 +13,22 @@ router.get('/current', requireAuth, async (req, res, next) => {
     where: {
       userId,
     },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: Spot,
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      },
+      {
+        model: ReviewImage,
+        attributes: ['id', 'url']
+      }
+    ]
   });
 
   res.json(reviews);
