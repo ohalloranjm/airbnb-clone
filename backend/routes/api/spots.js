@@ -564,6 +564,7 @@ router.get('/', async (req, res, next) => {
 
     page = Number(page) || 1;
     size = Number(size) || 20;
+    price = Number(price);
     minLat = Number(minLat);
     maxLat = Number(maxLat);
     minLng = Number(minLng);
