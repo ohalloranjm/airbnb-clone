@@ -564,11 +564,6 @@ router.get('/', async (req, res, next) => {
 
     page = Number(page) || 1;
     size = Number(size) || 20;
-    price = Number(price);
-    minLat = Number(minLat);
-    maxLat = Number(maxLat);
-    minLng = Number(minLng);
-    maxLng = Number(maxLng);
 
     const where = {};
 
@@ -640,6 +635,9 @@ router.get('/', async (req, res, next) => {
 
       const previewImages = spot.SpotImages.find(image => image.preview);
       if (previewImages) spot.previewImage = previewImages.url;
+
+      spot.lng = Number(spot.lng);
+      spot.lat = Number(spot.lat);
 
       delete spot.Reviews;
       delete spot.SpotImages;
