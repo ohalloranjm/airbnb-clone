@@ -129,7 +129,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       price: {
-        type: DataTypes.DECIMAL,
+        type: DataTypes.NUMERIC,
         validate: {
           min: {
             args: [0.01],
