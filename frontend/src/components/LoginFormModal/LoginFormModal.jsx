@@ -23,12 +23,12 @@ function LoginFormModal() {
       });
   };
 
-  // const loginDemo = () => {
-  //   setErrors({});
-  //   return dispatch(sessionActions.login({ credential: <DEMO_USER>, password: <DEMO_PASSWORD>}))
-  //     .then(closeModal)
-  //     .catch(console.error)
-  // }
+  const loginDemo = () => {
+    setErrors({});
+    return dispatch(sessionActions.login({ credential: 'DemoUser', password: 'demo-user-password'}))
+      .then(closeModal)
+      .catch(console.error)
+  }
 
   return (
     <>
