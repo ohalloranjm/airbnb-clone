@@ -9,6 +9,10 @@ a {
     text-decoration: none
 }
 
+button {
+    background-color: inherit;
+}
+
 div, span, a, h1, h2, h3, h4, h5, h6, p, a, img, section, header, main, footer, article, ul, ol, li, button, body {
     margin: 0;
     border: 0;
@@ -22,6 +26,16 @@ body {
     padding: 5px;
 }
 
-.link {
-    cursor: pointer
+.link, a {
+    cursor: pointer;
+    color: blue
+}
+
+.link:hover, a:hover {
+    color: rgb(85, 246, 255);
+}
+
+.errors {
+    font-size: 0.8em;
+    color: red;
 }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import './LoginFormModal.css'
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -17,40 +18,44 @@ function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) {
-          setErrors(data.errors);
+        if (data && data.message) {
+          setErrors({ credential: data.message });
         }
       });
   };
 
+  const loginDemo = () => {
+    setErrors({});
+    return dispatch(sessionActions.login({ credential: 'DemoUser', password: 'demo-user-password'}))
+      .then(closeModal)
+      .catch(console.error)
+  }
+
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+    <div className="login-modal">
+      <h1 className="login-title">Log In</h1>
+      <form onSubmit={handleSubmit} className="login-form">
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
+            placeholder="Username or Email"
             required
           />
-        </label>
-        <label>
-          Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password"
           />
-        </label>
         {errors.credential && (
-          <p>{errors.credential}</p>
+          <p className='errors'>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <button className='login-button' type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
       </form>
-    </>
+      <button className="link demo-button" onClick={loginDemo}>Demo User</button>
+    </div>
   );
 }
 
