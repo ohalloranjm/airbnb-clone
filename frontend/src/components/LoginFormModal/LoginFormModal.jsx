@@ -57,7 +57,7 @@ function LoginFormModal() {
         )}
         <button type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
       </form>
-      {/* <button className="link" onClick={loginDemo}>Demo User</button> */}
+      <button className="link" onClick={loginDemo}>Demo User</button>
     </>
   );
 }
