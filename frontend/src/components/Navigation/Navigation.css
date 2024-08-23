@@ -1,3 +1,22 @@
+.nav-logo {
+    height: 50px;
+}
+
+.navbar {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.toggle-user-menu {
+    cursor: pointer
+}
+
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+}
+
 .hidden {
     display: none;
 }
