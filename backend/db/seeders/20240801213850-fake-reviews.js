@@ -36,7 +36,7 @@ module.exports = {
         userId: (
           await User.findOne({
             where: {
-              username: 'Demo-lition',
+              username: 'DemoUser',
             },
           })
         ).id,
@@ -49,7 +49,7 @@ module.exports = {
         userId: (
           await User.findOne({
             where: {
-              username: 'Demo-lition',
+              username: 'DemoUser',
             },
           })
         ).id,

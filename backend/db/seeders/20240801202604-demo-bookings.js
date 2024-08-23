@@ -19,7 +19,7 @@ module.exports = {
           model: User,
           where: {
             username: {
-              [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'],
+              [Op.in]: ['DemoUser', 'FakeUser1', 'FakeUser2'],
             },
           },
         },
@@ -62,7 +62,7 @@ module.exports = {
           model: User,
           where: {
             username: {
-              [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'],
+              [Op.in]: ['DemoUser', 'FakeUser1', 'FakeUser2'],
             },
           },
         },
