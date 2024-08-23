@@ -1,3 +1,29 @@
+.nav-logo {
+    height: 50px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.toggle-user-menu {
+    cursor: pointer;
+    font-size: 2em;
+    background-color: inherit;
+}
+
+.profile-dropdown {
+    position: absolute;
+    right: 0;
+    width: 150px;
+    border: 2px solid blue;
+}
+
+.profile-dropdown > li {
+    padding: 5px;
+}
+
 .hidden {
     display: none;
 }
