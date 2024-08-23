@@ -1,1 +1,27 @@
-/* TODO: Add sitewide styles */
+/* RESET BROWSER DEFAULTS */
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    color: black;
+    text-decoration: none
+}
+
+div, span, a, h1, h2, h3, h4, h5, h6, p, a, img, section, header, main, footer, article, ul, ol, li, button, body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+/* APPLY GLOBALLY */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+}
+
+.link {
+    cursor: pointer
+}
