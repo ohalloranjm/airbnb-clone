@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf';
 const LOAD_SPOTS = 'spots/loadSpots';
 
 const loadSpots = spots => {
+  console.log('spots when you hit loadSpots: ', spots);
   return {
     type: LOAD_SPOTS,
     spots,
@@ -26,7 +27,10 @@ const spotsReducer = (state = initialState, action) => {
       spotsArr.forEach(spot => {
         newState[spot.id] = spot;
       });
+      return newState;
     }
+    default:
+      return state;
   }
 };
 
