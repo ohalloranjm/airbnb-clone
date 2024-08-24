@@ -55,22 +55,6 @@ function SignupFormModal() {
       <form className="session-modal-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        {errors.email && <p className="errors">{errors.email}</p>}
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        {errors.username && <p className="errors">{errors.username}</p>}
-        <input
-          type="text"
           placeholder="First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
@@ -85,6 +69,22 @@ function SignupFormModal() {
           required
         />
         {errors.lastName && <p className="errors">{errors.lastName}</p>}
+        <input
+          type="text"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        {errors.email && <p className="errors">{errors.email}</p>}
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        {errors.username && <p className="errors">{errors.username}</p>}
         <input
           type="password"
           placeholder="Password"
