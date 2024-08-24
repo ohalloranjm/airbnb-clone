@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.Spot, { foreignKey: 'ownerId' });
       User.hasMany(models.Booking, { foreignKey: 'userId' });
-      User.hasMany(models.Review, { foreignKey: 'userId'})
+      User.hasMany(models.Review, { foreignKey: 'userId' });
     }
   }
 
@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [4, 30],
+          len: {
+            args: [4, 30],
+            msg: 'Username must be between 4 and 30 characters',
+          },
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
               throw new Error('Cannot be an email.');
@@ -76,7 +79,7 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt'],
         },
       },
-    },
+    }
   );
   return User;
 };
