@@ -1,0 +1,36 @@
+.spot-index {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    gap: 10px;
+}
+
+.spot-tile {
+    display: grid;
+    grid-template-areas: 
+        "spot-tile-image spot-tile-image"
+        "spot-tile-location spot-tile-rating"
+        "spot-tile-price .";
+    color: inherit
+}
+
+.spot-tile-image {
+    grid-area: spot-tile-image
+}
+
+.spot-tile-location {
+    grid-area: spot-tile-location
+}
+
+.spot-tile-rating {
+    grid-area: spot-tile-rating;
+    text-align: right
+}
+
+.spot-tile-price {
+    grid-area: spot-tile-price
+}
+
+.hidden-tooltip {
+    display: none;
+}

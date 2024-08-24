@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react" 
 import { getSpots } from "../../store/spots";
 import SpotTile from "./SpotTile";
+import './SpotIndex.css'
 
 export default function SpotIndex() {
     const dispatch = useDispatch();
