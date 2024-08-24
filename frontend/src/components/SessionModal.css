@@ -1,4 +1,4 @@
-.login-modal {
+.session-modal {
     width: 350px;
     border: 5px blue solid;
     padding: 10px;
@@ -6,26 +6,26 @@
     flex-direction: column;
 }
 
-.login-title {
+.session-modal-title {
     text-align: center;
     font-size: 1.3em;
 }
 
-.login-form {
+.session-modal-form {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 10px;
-    margin: 10px 0 20px;
+    margin: 10px 0;
 }
 
-.login-button {
+.session-modal-submit {
     border: 1px gray solid;
     border-radius: 5px;
     cursor: pointer;
     padding: 10px;
 }
 
-.login-button:hover {
+.session-modal-submit:hover {
     box-shadow: 3px 3px lightgray;
 }

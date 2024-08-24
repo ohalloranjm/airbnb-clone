@@ -2,7 +2,7 @@ import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './LoginFormModal.css'
+import '../SessionModal.css'
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -32,9 +32,9 @@ function LoginFormModal() {
   }
 
   return (
-    <div className="login-modal">
-      <h1 className="login-title">Log In</h1>
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="session-modal">
+      <h1 className="session-modal-title">Log In</h1>
+      <form onSubmit={handleSubmit} className="session-modal-form">
           <input
             type="text"
             value={credential}
@@ -52,7 +52,7 @@ function LoginFormModal() {
         {errors.credential && (
           <p className='errors'>{errors.credential}</p>
         )}
-        <button className='login-button' type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
+        <button className='session-modal-submit' type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
       </form>
       <button className="link demo-button" onClick={loginDemo}>Demo User</button>
     </div>
