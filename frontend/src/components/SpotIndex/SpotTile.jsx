@@ -1,13 +1,15 @@
+import { round } from "../../utils";
+
 export default function SpotTile({spot}) {
 
     let { avgRating } = spot;
     if (!avgRating) avgRating = 'New'
-    else avgRating = `★ ${avgRating % 1 === 0 ? String(avgRating) + '.0' : avgRating}`
+    else avgRating = `★ ${round(avgRating, 1)}`
 
     return <div className="spot-tile">
         <img className="spot-tile-image" src={spot.previewImage} alt={spot.name} />
         <p className="spot-tile-location">{spot.city}, {spot.state}</p>
         <p className="spot-tile-rating">{avgRating}</p>
-        <p className="spot-tile-price">${spot.price}/night</p>
+        <p className="spot-tile-price">${round(spot.price, 2)}/night</p>
     </div>
 }
