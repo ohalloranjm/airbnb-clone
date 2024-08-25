@@ -12,7 +12,7 @@ export default function SpotDetails () {
     }, [dispatch])
     const spot = useSelector(state => state.spots[spotId]);
 
-    if (spot) {
+    if (spot && spot.SpotImages) {
 
         const {SpotImages} = spot;
         const previewImage = SpotImages.find(img => img.preview);
