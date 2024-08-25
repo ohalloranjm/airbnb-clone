@@ -25,6 +25,8 @@ export default function SpotDetails () {
             i++;
         }
 
+        const reviewInfo = (spot.avgRating ? `★ ${round(spot.avgRating, 1)}` : 'New!') + (spot.numReviews ? ` : ${spot.numReviews} review${spot.numReviews === 1 ? '' : 's'}` : '')
+
         return <>
             <h1>{spot.name}</h1>
             <p className="sd-location">{spot.city}, {spot.state}, {spot.country}</p>
@@ -34,12 +36,15 @@ export default function SpotDetails () {
             <p className="sd-description">{spot.description}</p>
             <div className="sd-callout">
                 <p className="sd-callout-price">${round(spot.price, 2)} /night</p>
+                <p className="sd-callout-reviews">{reviewInfo}</p>
                 <button 
                     className="sd-callout-reserve" 
                     type="button"
                     onClick={() => alert('Feature coming soon!')}
                 >Reserve</button>
             </div>
+
+            <h2>{reviewInfo}</h2>
         </>
     } else {
         return <h2>Could not find spot</h2>
