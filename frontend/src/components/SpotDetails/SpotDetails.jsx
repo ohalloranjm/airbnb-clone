@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getSpotDetails } from "../../store/spots";
 import { round } from "../../utils"
 import './SpotDetails.css'
+import SpotReviews from "./SpotReviews";
 
 export default function SpotDetails () {
     const { spotId } = useParams();
@@ -44,7 +45,7 @@ export default function SpotDetails () {
                 >Reserve</button>
             </div>
 
-            <h2>{reviewInfo}</h2>
+            <SpotReviews spotId={spot.id} reviewInfo={reviewInfo} />
         </>
     } else {
         return <h2>Could not find spot</h2>
