@@ -379,9 +379,9 @@ router.get('/:spotId', async (req, res, next) => {
       });
 
       const avgRating = totalStars / spot.Reviews.length;
-      spot.avgStarRating = avgRating;
+      spot.avgRating = avgRating;
     } else {
-      spot.avgStarRating = null;
+      spot.avgRating = null;
     }
 
     spot.Owner = spot.User;
@@ -404,7 +404,7 @@ router.get('/:spotId', async (req, res, next) => {
     //   createdAt,
     //   updatedAt,
     //   numReviews,
-    //   avgStarRating,
+    //   avgRating,
     //   SpotImages,
     //   Owner,
     // } = spot;
@@ -424,7 +424,7 @@ router.get('/:spotId', async (req, res, next) => {
     //   createdAt,
     //   updatedAt,
     //   numReviews,
-    //   avgStarRating,
+    //   avgRating,
     //   SpotImages,
     //   Owner,
     // });
