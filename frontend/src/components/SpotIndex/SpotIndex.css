@@ -31,6 +31,12 @@
     grid-area: spot-tile-price
 }
 
+.name-tooltip {
+    position: absolute;
+    background-color: black;
+    color: white;
+}
+
 .hidden-tooltip {
     display: none;
 }

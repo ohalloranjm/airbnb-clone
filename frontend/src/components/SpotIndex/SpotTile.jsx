@@ -16,20 +16,16 @@ export default function SpotTile({spot}) {
     else avgRating = `★ ${round(avgRating, 1)}`
 
     const displayTooltip = () => {
-        // console.log(showTooltip);
         setShowTooltip(true);
     }
 
     const closeTooltip = () => {
-        // console.log(showTooltip);
         setShowTooltip(false);
     }
 
     const tooltipClassName = () => {
         return 'name-tooltip' + (showTooltip ? '' : ' hidden-tooltip');
     }
-
-    console.log(tooltipClassName())
 
     return <Link 
             to='/'
