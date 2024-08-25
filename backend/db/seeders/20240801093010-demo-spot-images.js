@@ -24,9 +24,39 @@ module.exports = {
         preview: true,
       },
       {
+        spotId: spotIds[0],
+        url: '/ocean2.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[0],
+        url: '/ocean3.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[0],
+        url: '/ocean4.png',
+        preview: false,
+      },
+      {
         spotId: spotIds[1],
         url: '/underwater.png',
         preview: true,
+      },
+      {
+        spotId: spotIds[1],
+        url: '/underwater2.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[1],
+        url: '/underwater3.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[1],
+        url: '/underwater4.png',
+        preview: false,
       },
       {
         spotId: spotIds[2],
@@ -34,14 +64,59 @@ module.exports = {
         preview: true,
       },
       {
+        spotId: spotIds[2],
+        url: '/puddle2.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[2],
+        url: '/puddle3.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[2],
+        url: '/puddle4.png',
+        preview: false,
+      },
+      {
         spotId: spotIds[3],
         url: '/river.png',
         preview: true,
       },
       {
+        spotId: spotIds[3],
+        url: '/river2.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[3],
+        url: '/river3.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[3],
+        url: '/river4.png',
+        preview: false,
+      },
+      {
         spotId: spotIds[4],
         url: '/waterpark.png',
         preview: true,
+      },
+      {
+        spotId: spotIds[4],
+        url: '/waterpark2.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[4],
+        url: '/waterpark3.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[4],
+        url: '/waterpark4.png',
+        preview: false,
       },
     ];
 
