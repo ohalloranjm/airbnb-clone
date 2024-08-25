@@ -11,9 +11,8 @@ export default function SpotTile({spot}) {
     // }, [showTooltip])
 
     let { avgRating } = spot;
-    if (!avgRating) avgRating = 'New'
-    else avgRating = `★ ${round(avgRating, 1)}`
-
+    avgRating = `★ ${avgRating ? round(avgRating, 1) : 'New!'}`
+    
     const displayTooltip = () => {
         setShowTooltip(true);
     }
