@@ -10,7 +10,7 @@ export default function SpotDetails () {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getSpotDetails(spotId));
-    }, [dispatch])
+    }, [dispatch, spotId])
     const spot = useSelector(state => state.spots[spotId]);
 
     if (spot) {
@@ -37,7 +37,7 @@ export default function SpotDetails () {
                 <button 
                     className="sd-callout-reserve" 
                     type="button"
-                    onClick={e => alert('Feature coming soon!')}
+                    onClick={() => alert('Feature coming soon!')}
                 >Reserve</button>
             </div>
         </>
