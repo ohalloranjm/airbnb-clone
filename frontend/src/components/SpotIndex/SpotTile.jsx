@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { round } from "../../utils";
-import NameTooltip from "./NameTooltip";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function SpotTile({spot}) {
 
@@ -28,7 +27,7 @@ export default function SpotTile({spot}) {
     }
 
     return <Link 
-            to='/'
+            to={`/spots/${spot.id}`}
             className="spot-tile" 
             onPointerEnter={displayTooltip}
             onPointerLeave={closeTooltip}

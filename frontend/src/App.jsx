@@ -29,7 +29,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <SpotIndex spots={{}} />
+        element: <SpotIndex />
+      },
+      {
+        path: '/spots/:spotId',
+        element: <h1>Spot detail page</h1>
       }
     ]
   }
