@@ -20,27 +20,27 @@ module.exports = {
     const images = [
       {
         spotId: spotIds[0],
-        url: 'fake-image-1',
+        url: '/ocean.png',
         preview: true,
       },
       {
         spotId: spotIds[1],
-        url: 'fake-image-2',
+        url: '/underwater.png',
         preview: true,
       },
       {
         spotId: spotIds[2],
-        url: 'fake-image-3',
+        url: '/puddle.png',
         preview: true,
       },
       {
         spotId: spotIds[3],
-        url: 'fake-image-4',
+        url: '/river.png',
         preview: true,
       },
       {
         spotId: spotIds[4],
-        url: 'fake-image-5',
+        url: '/waterpark.png',
         preview: true,
       },
     ];
@@ -56,7 +56,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     await queryInterface.bulkDelete(options, {
       url: {
-        [Op.startsWith]: 'fake-image-',
+        [Op.startsWith]: '/',
       },
     });
   },

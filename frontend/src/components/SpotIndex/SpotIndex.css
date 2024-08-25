@@ -1,0 +1,48 @@
+.spot-index {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    column-gap: 10px;
+    row-gap: 30px;
+}
+
+.spot-tile {
+    display: grid;
+    grid-template-areas: 
+        "spot-tile-image spot-tile-image"
+        "spot-tile-location spot-tile-rating"
+        "spot-tile-price .";
+    color: inherit
+}
+
+.spot-tile:hover {
+    background-color: aqua;
+    color: inherit;
+}
+
+.spot-tile-image {
+    grid-area: spot-tile-image
+}
+
+.spot-tile-location {
+    grid-area: spot-tile-location
+}
+
+.spot-tile-rating {
+    grid-area: spot-tile-rating;
+    text-align: right
+}
+
+.spot-tile-price {
+    grid-area: spot-tile-price
+}
+
+.name-tooltip {
+    position: absolute;
+    background-color: black;
+    color: white;
+}
+
+.hidden-tooltip {
+    display: none;
+}
