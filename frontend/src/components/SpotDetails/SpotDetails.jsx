@@ -17,7 +17,7 @@ export default function SpotDetails () {
 
     if (spot) {
 
-        const reviewInfo = '★ ' + (spot.avgRating ? round(spot.avgRating, 1) : 'New!') + ('numReviews' in spot ? ` · ${spot.numReviews} review${spot.numReviews === 1 ? '' : 's'}` : '')
+        const reviewInfo = '★ ' + (spot.avgRating ? round(spot.avgRating, 1) : 'New!') + (spot.numReviews ? ` · ${spot.numReviews} review${spot.numReviews === 1 ? '' : 's'}` : '')
 
         return <>
             <SpotInfo spot={spot} reviewInfo={reviewInfo} />
