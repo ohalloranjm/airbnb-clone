@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { postSpot, postSpotOtherImage } from "../../store/spots";
 
@@ -19,6 +20,7 @@ export default function CreateSpotForm() {
         '3': '',
     });
     const [errors, setErrors] = useState({})
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -41,8 +43,9 @@ export default function CreateSpotForm() {
                 for (const image of images) {
                     dispatch(postSpotOtherImage(newSpot.id, image));
                 }
+                return newSpot;
             })
-            .then(() => console.log('Navigating to new spot'))
+            .then(({ id }) => navigate(`/spots/${id}`))
             .catch(async (res) => {
                 console.error(res);
                 const data = await res.json();
