@@ -9,7 +9,7 @@ const loadReviews = reviews => {
   };
 };
 
-export const getReviewsBySpot = spotId => async dispatch => {
+export const getReviewsBySpotId = spotId => async dispatch => {
   const res = await csrfFetch(`/api/spots/${spotId}/reviews`);
   const data = await res.json();
   dispatch(loadReviews(data.Reviews));
