@@ -2,20 +2,15 @@ import { useState } from "react"
 import { useDispatch } from 'react-redux';
 import { postSpot } from "../../store/spots";
 
-export default function() {
+export default function CreateSpotForm() {
 
     const [country, setCountry] = useState('');
-    const [errCountry, setErrCountry] = useState('');
     const [address, setAddress] = useState('');
-    const [errAddress, setErrAddress] = useState('');
     const [city, setCity] = useState('');
-    const [errCity, setErrCity] = useState('');
     const [state, setState] = useState('');
-    const [errState, setErrState] = useState('');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
-    const [errPrice, setErrPrice] = useState('');
     const [previewImage, setPreviewImage] = useState('');
     const [otherImages, setOtherImages] = useState({
         '0': '',
@@ -23,6 +18,8 @@ export default function() {
         '2': '',
         '3': '',
     });
+    const [errors, setErrors] = useState({})
+
     const dispatch = useDispatch();
 
     const handleSubmit = e => {
@@ -31,13 +28,11 @@ export default function() {
             .then(console.log('Success'))
             .catch(async (res) => {
                 const data = await res.json();
-                if (data?.errors) {
-                    console.log(data.errors)
-                } else {
-                    console.log('something bad happened')
-                }
+                if (data?.errors) setErrors(data.errors);
             })
     }
+
+    // console.error(errors);
 
     return <>
         <h1>Create a New Spot</h1>
@@ -52,7 +47,7 @@ export default function() {
             value={country}
             onChange={e => setCountry(e.target.value)}
         />
-        <p className="errors">{errCountry}</p>
+        <p className="errors">{errors.country || null}</p>
 
         <input 
             className="create-spot-input"
@@ -60,7 +55,7 @@ export default function() {
             value={address}
             onChange={e => setAddress(e.target.value)}
         />
-        <p className="errors">{errAddress}</p>
+        <p className="errors">{errors.address || null}</p>
         
         <input 
             className="create-spot-input"
@@ -68,7 +63,7 @@ export default function() {
             value={city}
             onChange={e => setCity(e.target.value)}
         />
-        <p className="errors">{errCity}</p>
+        <p className="errors">{errors.city || null}</p>
         
         <input 
             className="create-spot-input"
@@ -76,7 +71,7 @@ export default function() {
             value={state}
             onChange={e => setState(e.target.value)}
         />
-        <p className="errors">{errState}</p>
+        <p className="errors">{errors.state || null}</p>
 
         <h2>Describe your place to guests</h2>
         <p className="create-spot-caption">"Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
@@ -87,16 +82,17 @@ export default function() {
             value={description}
             onChange={e => setDescription(e.target.value)}
         />
+        <p className="errors">{errors.description || null}</p>
 
         <h2>Create a title for your spot</h2>
         <p className="create-spot-caption">Catch guests' attention with a spot title that highlights what makes your place special</p>
-
         <input 
             className="create-spot-input"
             placeholder="Name your spot"
             value={name}
             onChange={e => setName(e.target.value)}
         />
+        <p className="errors">{errors.name || null}</p>
 
         <h2>Set a base price for your spot</h2>
         <p className="create-spot-caption">Competitive pricing can help your listing stand out and rank higher in search results.</p>
@@ -106,7 +102,7 @@ export default function() {
             value={price}
             onChange={e => setPrice(e.target.value)}
         />
-        <p className="errors">{errPrice}</p>
+        <p className="errors">{errors.price || null}</p>
 
         <h2>Liven up your spot with photos</h2>
         <p className="create-spot-caption">Submit a link to at least one photo to publish your spot.</p>
