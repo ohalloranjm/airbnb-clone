@@ -24,15 +24,23 @@ export default function CreateSpotForm() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        dispatch(postSpot({}))
-            .then(console.log('Success'))
+        const newSpot = {
+            address,
+            city,
+            state,
+            country,
+            name,
+            description,
+            price,
+            previewImage
+        }
+        dispatch(postSpot(newSpot))
+            .then(() => console.log('success'))
             .catch(async (res) => {
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors);
             })
     }
-
-    // console.error(errors);
 
     return <>
         <h1>Create a New Spot</h1>
@@ -113,6 +121,7 @@ export default function CreateSpotForm() {
             value={previewImage}
             onChange={e => setPreviewImage(e.target.value)}
         />
+        <p className="errors">{errors.previewImage || null}</p>
 
         {(['0', '1', '2', '3']).map(n => <input 
             key={n}
