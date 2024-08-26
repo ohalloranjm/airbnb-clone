@@ -40,8 +40,7 @@ export const postSpot = spot => async () => {
     },
     body,
   });
-  if (res.ok) return res;
-  else throw res;
+  return res;
 };
 
 const initialState = {};

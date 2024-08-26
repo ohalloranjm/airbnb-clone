@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { useDispatch } from 'react-redux';
+import { postSpot } from "../../store/spots";
 
 export default function() {
 
@@ -21,6 +23,21 @@ export default function() {
         '2': '',
         '3': '',
     });
+    const dispatch = useDispatch();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        dispatch(postSpot({}))
+            .then(console.log('Success'))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data?.errors) {
+                    console.log(data.errors)
+                } else {
+                    console.log('something bad happened')
+                }
+            })
+    }
 
     return <>
         <h1>Create a New Spot</h1>
@@ -112,9 +129,7 @@ export default function() {
         <button 
             type="submit"
             className="create-form-submit"
-            onClick={e => {
-                e.preventDefault();
-            }}
+            onClick={handleSubmit}
         >Create Spot</button>
 
         </form>
