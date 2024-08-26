@@ -8,12 +8,8 @@ export default function SpotReviews({spotId, reviewInfo}) {
     useEffect(() => {
         dispatch(getReviewsBySpotId(spotId));
     }, [dispatch, spotId]);
-    const reviews = useSelector(state => {
-        const reviewsArr = Object.values(state.reviews)
-        const filteredReviews = reviewsArr.filter(r => r.spotId === spotId);
-        const sortedReviews = filteredReviews.slice().sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
-        return sortedReviews;
-    });
+    const allReviews = useSelector(state => state.reviews);
+    const reviews = Object.values(allReviews).filter(r => r.spotId === spotId).sort((a, b) => a.createdAt > b.createdAt ? -1 : 1);
     
     return <div className="spot-details-reviews">
         <h2>{reviewInfo}</h2>
