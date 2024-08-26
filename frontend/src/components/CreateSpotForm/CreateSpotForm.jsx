@@ -57,7 +57,7 @@ export default function CreateSpotForm() {
         <h1>Create a New Spot</h1>
         <form className="create-spot-form">
 
-        <h2>Where's your place located?</h2>
+        <h2>Where’s your place located?</h2>
         <p className="create-spot-caption">Guests will only get your exact address once they booked a reservation.</p>
 
         <input 
@@ -93,7 +93,7 @@ export default function CreateSpotForm() {
         <p className="errors">{errors.state || null}</p>
 
         <h2>Describe your place to guests</h2>
-        <p className="create-spot-caption">"Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
+        <p className="create-spot-caption">Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
 
         <textarea 
             className="create-spot-input"
@@ -104,7 +104,7 @@ export default function CreateSpotForm() {
         <p className="errors">{errors.description || null}</p>
 
         <h2>Create a title for your spot</h2>
-        <p className="create-spot-caption">Catch guests' attention with a spot title that highlights what makes your place special</p>
+        <p className="create-spot-caption">Catch guests’ attention with a spot title that highlights what makes your place special</p>
         <input 
             className="create-spot-input"
             placeholder="Name your spot"
