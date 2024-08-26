@@ -23,7 +23,7 @@ module.exports = {
             model: 'Users',
           },
           onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
+          onUpdate: 'CASCADE',
         },
         address: {
           type: Sequelize.STRING,
@@ -43,11 +43,9 @@ module.exports = {
         },
         lat: {
           type: Sequelize.NUMERIC,
-          allowNull: false,
         },
         lng: {
           type: Sequelize.NUMERIC,
-          allowNull: false,
         },
         name: {
           type: Sequelize.STRING,
@@ -72,7 +70,7 @@ module.exports = {
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
       },
-      options,
+      options
     );
   },
 

@@ -74,7 +74,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       lat: {
         type: DataTypes.NUMERIC,
-        allowNull: false,
         validate: {
           min: {
             args: [-90],
@@ -88,7 +87,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       lng: {
         type: DataTypes.NUMERIC,
-        allowNull: false,
         validate: {
           min: {
             args: [-180],
@@ -108,6 +106,10 @@ module.exports = (sequelize, DataTypes) => {
             args: [true],
             msg: 'Name is required',
           },
+          notNull: {
+            args: [true],
+            msg: 'Name is required',
+          },
           len: {
             args: [0, 49],
             msg: 'Name must be less than 50 characters',
@@ -122,18 +124,27 @@ module.exports = (sequelize, DataTypes) => {
             args: [true],
             msg: 'Description is required',
           },
-          notEmpty: {
-            args: [true],
-            msg: 'Description is required',
+          len: {
+            args: [30, Infinity],
+            msg: 'Description must be 30 or more characters',
           },
         },
       },
       price: {
         type: DataTypes.NUMERIC,
+        allowNull: false,
         validate: {
           min: {
             args: [0.01],
             msg: 'Price per day must be a positive number',
+          },
+          notNull: {
+            args: [true],
+            msg: 'Price is required',
+          },
+          notEmpty: {
+            args: [true],
+            msg: 'Price is required',
           },
         },
       },
