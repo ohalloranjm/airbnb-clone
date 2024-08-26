@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getReviewsBySpotId } from "../../store/reviews";
 import ReviewTile from "./ReviewTile";
+import OpenModalMenuItem from "../../context/OpenModalMenuItem";
+import PostReviewFormModal from "../PostReviewFormModal/PostReviewFormModal";
 
 export default function SpotReviews({spot, reviewInfo}) {
     const dispatch = useDispatch();
@@ -18,7 +20,10 @@ export default function SpotReviews({spot, reviewInfo}) {
         
     return <div className="spot-details-reviews">
         <h2>{reviewInfo}</h2>
-        {shouldPromptReview ? <button>Post Your Review</button> : null}
+        {shouldPromptReview ? <OpenModalMenuItem 
+            itemText="Post Your Review"
+            modalComponent={<PostReviewFormModal />}
+        /> : null}
         {reviews.map(r => <ReviewTile key={r.id} review={r} />)}
         {shouldPromptReview && !reviews.length ? <p>Be the first to post a review!</p> : null}
     </div>
