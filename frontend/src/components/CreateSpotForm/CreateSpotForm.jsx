@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch } from 'react-redux';
-import { postSpot } from "../../store/spots";
+import { postSpot, postSpotOtherImage } from "../../store/spots";
 
 export default function CreateSpotForm() {
 
@@ -35,8 +35,16 @@ export default function CreateSpotForm() {
             previewImage
         }
         dispatch(postSpot(newSpot))
-            .then(() => console.log('success'))
+            .then(async (res) => {
+                const newSpot = await res.json();
+                const images = Object.values(otherImages).filter(i => i);
+                for (const image of images) {
+                    dispatch(postSpotOtherImage(newSpot.id, image));
+                }
+            })
+            .then(() => console.log('Navigating to new spot'))
             .catch(async (res) => {
+                console.error(res);
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors);
             })
