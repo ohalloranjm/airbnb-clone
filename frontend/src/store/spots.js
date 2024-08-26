@@ -31,6 +31,19 @@ export const getSpotDetails = spotId => async dispatch => {
   return spot;
 };
 
+export const postSpot = spot => async () => {
+  const body = JSON.stringify(spot);
+  const res = await csrfFetch(`/api/spots`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body,
+  });
+  if (res.ok) return res;
+  else throw res;
+};
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
