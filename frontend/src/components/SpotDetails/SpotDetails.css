@@ -5,3 +5,7 @@
 .sd-image-secondary {
     width: 50px;
 }
+
+.sd-callout {
+    border: 1px black solid;
+}
