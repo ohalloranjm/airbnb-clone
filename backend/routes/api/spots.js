@@ -451,7 +451,6 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 router.post('/', requireAuth, async (req, res, next) => {
-  console.log('We are hitting POST /spots');
   const {
     address,
     city,
@@ -468,7 +467,6 @@ router.post('/', requireAuth, async (req, res, next) => {
 
   let newSpot;
   try {
-    console.log('We are trying to create a spot');
     newSpot = await Spot.create({
       address,
       city,
@@ -481,34 +479,18 @@ router.post('/', requireAuth, async (req, res, next) => {
       price,
       ownerId,
     });
-    console.log(
-      'We have successfuly created a spot; we are trying to add the previewImage'
-    );
 
     await newSpot.createSpotImage({ url: previewImage, preview: true });
 
-    console.log(
-      'We have successfully added the previewImage; we are sending back a 201'
-    );
-
     res.status(201).json(newSpot);
   } catch (err) {
-    console.log('Some sort of error has cropped up');
     if (!newSpot && !previewImage) {
-      console.log('!newSpot && !previewImage fulfilled');
       err.errors.push({
         message: 'Preview Image URL is required',
         path: 'url',
       });
     } else if (newSpot) {
-      console.log(
-        'else if (newSpot) fulfilled; we are trying to destroy the newSpot'
-      );
       await newSpot.destroy();
-      console.log(
-        'We have successfully destroyed the newSpot; now lets take a look at the current error'
-      );
-      console.error(err);
     }
     next(err);
   }

@@ -38,7 +38,6 @@ export default function CreateSpotForm() {
             .then(() => console.log('success'))
             .catch(async (res) => {
                 const data = await res.json();
-                console.error('Here it is on the frontend: ', data)
                 if (data?.errors) setErrors(data.errors);
             })
     }
