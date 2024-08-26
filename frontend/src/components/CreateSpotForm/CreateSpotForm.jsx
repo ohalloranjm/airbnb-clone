@@ -109,7 +109,13 @@ export default function() {
             onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
         />)}
 
-
+        <button 
+            type="submit"
+            className="create-form-submit"
+            onClick={e => {
+                e.preventDefault();
+            }}
+        >Create Spot</button>
 
         </form>
     </>
