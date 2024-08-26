@@ -7,6 +7,12 @@
     justify-content: space-between;
 }
 
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .toggle-user-menu {
     cursor: pointer;
     font-size: 2em;

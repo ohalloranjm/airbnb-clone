@@ -7,16 +7,17 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-      <ul className="navbar">
-        <li>
+      <nav className="navbar">
         <NavLink to="/"><img className="nav-logo" src="/logo.png" alt="waterbnb" /> waterbnb</NavLink>
-        </li>
         {isLoaded && (
+          <ul className="navbar-right">
+            <li>Create a Spot</li>
           <li>
             <ProfileButton user={sessionUser} />
           </li>
+          </ul>
         )}
-      </ul>
+      </nav>
   );
 }
 
