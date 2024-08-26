@@ -38,6 +38,7 @@ export default function CreateSpotForm() {
             .then(() => console.log('success'))
             .catch(async (res) => {
                 const data = await res.json();
+                console.error('Here it is on the frontend: ', data)
                 if (data?.errors) setErrors(data.errors);
             })
     }
@@ -121,7 +122,7 @@ export default function CreateSpotForm() {
             value={previewImage}
             onChange={e => setPreviewImage(e.target.value)}
         />
-        <p className="errors">{errors.previewImage || null}</p>
+        <p className="errors">{errors.url || null}</p>
 
         {(['0', '1', '2', '3']).map(n => <input 
             key={n}
