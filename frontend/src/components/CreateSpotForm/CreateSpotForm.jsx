@@ -14,6 +14,13 @@ export default function() {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [errPrice, setErrPrice] = useState('');
+    const [previewImage, setPreviewImage] = useState('');
+    const [otherImages, setOtherImages] = useState({
+        '0': '',
+        '1': '',
+        '2': '',
+        '3': '',
+    });
 
     return <>
         <h1>Create a New Spot</h1>
@@ -83,6 +90,26 @@ export default function() {
             onChange={e => setPrice(e.target.value)}
         />
         <p className="errors">{errPrice}</p>
+
+        <h2>Liven up your spot with photos</h2>
+        <p className="create-spot-caption">Submit a link to at least one photo to publish your spot.</p>
+
+        <input 
+            className="create-spot-input"
+            placeholder="Preview Image URL"
+            value={previewImage}
+            onChange={e => setPreviewImage(e.target.value)}
+        />
+
+        {(['0', '1', '2', '3']).map(n => <input 
+            key={n}
+            className="create-spot-input"
+            placeholder="Image URL"
+            value={otherImages[n]}
+            onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
+        />)}
+
+
 
         </form>
     </>
