@@ -31,6 +31,26 @@ export const getSpotDetails = spotId => async dispatch => {
   return spot;
 };
 
+export const postSpot = spot => async () => {
+  const body = JSON.stringify(spot);
+  const res = await csrfFetch(`/api/spots`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  });
+  return res;
+};
+
+export const postSpotOtherImage = (spotId, url) => async () => {
+  const body = JSON.stringify({ url, preview: false });
+  const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  });
+  return res;
+};
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {

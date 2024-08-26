@@ -389,46 +389,6 @@ router.get('/:spotId', async (req, res, next) => {
     delete spot.Reviews;
     delete spot.User;
 
-    // const {
-    //   id,
-    //   ownerId,
-    //   address,
-    //   city,
-    //   state,
-    //   country,
-    //   lat,
-    //   lng,
-    //   name,
-    //   description,
-    //   price,
-    //   createdAt,
-    //   updatedAt,
-    //   numReviews,
-    //   avgRating,
-    //   SpotImages,
-    //   Owner,
-    // } = spot;
-
-    // res.json({
-    //   id,
-    //   ownerId,
-    //   address,
-    //   city,
-    //   state,
-    //   country,
-    //   lat,
-    //   lng,
-    //   name,
-    //   description,
-    //   price,
-    //   createdAt,
-    //   updatedAt,
-    //   numReviews,
-    //   avgRating,
-    //   SpotImages,
-    //   Owner,
-    // });
-
     res.json(spot);
   } catch (err) {
     next(err);
@@ -491,21 +451,23 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 router.post('/', requireAuth, async (req, res, next) => {
-  try {
-    const {
-      address,
-      city,
-      state,
-      country,
-      lat,
-      lng,
-      name,
-      description,
-      price,
-    } = req.body;
-    const ownerId = req.user.id;
+  const {
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+    previewImage,
+  } = req.body;
+  const ownerId = req.user.id;
 
-    const newSpot = await Spot.create({
+  let newSpot;
+  try {
+    newSpot = await Spot.create({
       address,
       city,
       state,
@@ -518,13 +480,18 @@ router.post('/', requireAuth, async (req, res, next) => {
       ownerId,
     });
 
+    await newSpot.createSpotImage({ url: previewImage, preview: true });
+
     res.status(201).json(newSpot);
   } catch (err) {
-    // if (err instanceof Sequelize.ValidationError) {
-    //   res.status(400).json({
-    //     message: err.message,
-    //   });
-    // }
+    if (!newSpot && !previewImage) {
+      err.errors.push({
+        message: 'Preview Image URL is required',
+        path: 'url',
+      });
+    } else if (newSpot) {
+      await newSpot.destroy();
+    }
     next(err);
   }
 });
