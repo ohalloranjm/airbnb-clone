@@ -1,18 +1,28 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux";
+import { postReview } from "../../store/reviews";
 
-export default function PostReviewFormModal() {
-    const [comment, setComment] = useState('');
+export default function PostReviewFormModal({spotId}) {
+    const [review, setReview] = useState('');
     const [stars, setStars] = useState('');
+    const [error, setError] = useState('')
+    const dispatch = useDispatch();
 
-    const submitIsDisabled = comment.length < 10 || stars === ''
+    const submitIsDisabled = review.length < 10 || stars === ''
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(postReview({ review, stars}, spotId))
+            .catch(e => setError(e.message));
+    }
     
     return <>
         <h1>How was your stay?</h1>
+        {error?.length ? <p className="errors">{error}</p> : null}
         <form>
             <textarea 
                 placeholder="Leave your review here…"
-                value={comment}
-                onChange={e => setComment(e.target.value)}
+                value={review}
+                onChange={e => setReview(e.target.value)}
             />
             <label>
             <select 
@@ -30,7 +40,7 @@ export default function PostReviewFormModal() {
             </label>
             <button
                 type='submit'
-                onClick={e => e.preventDefault()}
+                onClick={handleSubmit}
                 disabled={submitIsDisabled}
             >
                 Submit Your Review

@@ -22,7 +22,7 @@ export default function SpotReviews({spot, reviewInfo}) {
         <h2>{reviewInfo}</h2>
         {shouldPromptReview ? <OpenModalMenuItem 
             itemText="Post Your Review"
-            modalComponent={<PostReviewFormModal />}
+            modalComponent={<PostReviewFormModal spotId={spot.id} />}
         /> : null}
         {reviews.map(r => <ReviewTile key={r.id} review={r} />)}
         {shouldPromptReview && !reviews.length ? <p>Be the first to post a review!</p> : null}
