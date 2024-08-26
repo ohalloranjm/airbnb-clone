@@ -12,6 +12,8 @@ export default function() {
     const [errState, setErrState] = useState('');
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
+    const [price, setPrice] = useState('');
+    const [errPrice, setErrPrice] = useState('');
 
     return <>
         <h1>Create a New Spot</h1>
@@ -71,6 +73,16 @@ export default function() {
             value={name}
             onChange={e => setName(e.target.value)}
         />
+
+        <h2>Set a base price for your spot</h2>
+        <p className="create-spot-caption">Competitive pricing can help your listing stand out and rank higher in search results.</p>
+        <input 
+            type="number"
+            placeholder="Price per night (USD)"
+            value={price}
+            onChange={e => setPrice(e.target.value)}
+        />
+        <p className="errors">{errPrice}</p>
 
         </form>
     </>
