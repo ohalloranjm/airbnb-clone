@@ -21,7 +21,7 @@ export default function SpotDetails () {
 
         return <>
             <SpotInfo spot={spot} reviewInfo={reviewInfo} />
-            <SpotReviews spotId={spot.id} reviewInfo={reviewInfo} />
+            <SpotReviews spot={spot} reviewInfo={reviewInfo} />
         </>
     } else {
         return <h2>Could not find spot</h2>
