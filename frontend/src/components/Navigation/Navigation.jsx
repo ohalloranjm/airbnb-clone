@@ -11,7 +11,7 @@ function Navigation({ isLoaded }) {
         <NavLink to="/"><img className="nav-logo" src="/logo.png" alt="waterbnb" /> waterbnb</NavLink>
         {isLoaded && (
           <ul className="navbar-right">
-            <li>Create a Spot</li>
+            {sessionUser ? <li>Create a Spot</li> : null}
           <li>
             <ProfileButton user={sessionUser} />
           </li>
