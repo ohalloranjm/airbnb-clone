@@ -12,7 +12,9 @@ export default function SpotReviews({spot, reviewInfo}) {
     const user = useSelector(state => state.session.user);
     const reviews = Object.values(allReviews).filter(r => r.spotId === spot.id).sort((a, b) => a.createdAt > b.createdAt ? -1 : 1);
 
-    const shouldPromptReview = user && user.id !== spot.ownerId;
+    const shouldPromptReview = user 
+        && user.id !== spot.ownerId 
+        && !reviews.some(r => r.userId === user.id);
         
     return <div className="spot-details-reviews">
         <h2>{reviewInfo}</h2>
