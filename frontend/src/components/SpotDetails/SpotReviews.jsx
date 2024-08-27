@@ -4,11 +4,9 @@ import { getReviewsBySpotId } from "../../store/reviews";
 import ReviewTile from "./ReviewTile";
 import OpenModalMenuItem from "../../context/OpenModalMenuItem";
 import PostReviewFormModal from "../PostReviewFormModal/PostReviewFormModal";
-import { useState } from "react";
 
-export default function SpotReviews({spot, reviewInfo}) {
+export default function SpotReviews({spot, reviewInfo, setRefresh, refresh}) {
     const dispatch = useDispatch();
-    const [refresh, setRefresh] = useState(0);
     useEffect(() => {
         dispatch(getReviewsBySpotId(spot.id));
     }, [dispatch, spot.id, refresh]);
