@@ -1,9 +1,11 @@
-import { useState } from "react"
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
-import { postSpot, postSpotOtherImage } from "../../store/spots";
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { getSpotDetails, postSpot, postSpotOtherImage } from "../../store/spots";
 
 export default function CreateSpotForm() {
+
+    const {spotId} = useParams();
 
     const [country, setCountry] = useState('');
     const [address, setAddress] = useState('');
@@ -21,8 +23,28 @@ export default function CreateSpotForm() {
     });
     const [errors, setErrors] = useState({})
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
+    const user = useSelector(state => state.session.user);
+    useEffect(() => {
+        if (spotId) {
+            if (!user) navigate('/')
+            dispatch(getSpotDetails(spotId))
+                .then(spot => {
+                    if (spot.ownerId !== user.id) {
+                        navigate('/');
+                        return;
+                    } else {
+                        setCountry(spot.country);
+                        setAddress(spot.address);
+                        setCity(spot.city);
+                        setState(spot.state);
+                        setDescription(spot.description);
+                        setName(spot.name);
+                        setPrice(spot.price);
+                    }
+                })
+        }
+    }, [dispatch, spotId])
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -54,7 +76,7 @@ export default function CreateSpotForm() {
     }
 
     return <>
-        <h1>Create a New Spot</h1>
+        <h1>{spotId ? "Update Your Spot" : "Create a New Spot"}</h1>
         <form className="create-spot-form">
 
         <h2>Where’s your place located?</h2>
@@ -123,30 +145,32 @@ export default function CreateSpotForm() {
         />
         <p className="errors">{errors.price || null}</p>
 
-        <h2>Liven up your spot with photos</h2>
-        <p className="create-spot-caption">Submit a link to at least one photo to publish your spot.</p>
+        {spotId ? null : <>
+            <h2>Liven up your spot with photos</h2>
+            <p className="create-spot-caption">Submit a link to at least one photo to publish your spot.</p>
 
-        <input 
-            className="create-spot-input"
-            placeholder="Preview Image URL"
-            value={previewImage}
-            onChange={e => setPreviewImage(e.target.value)}
-        />
-        <p className="errors">{errors.url || null}</p>
+            <input 
+                className="create-spot-input"
+                placeholder="Preview Image URL"
+                value={previewImage}
+                onChange={e => setPreviewImage(e.target.value)}
+            />
+            <p className="errors">{errors.url || null}</p>
 
-        {(['0', '1', '2', '3']).map(n => <input 
-            key={n}
-            className="create-spot-input"
-            placeholder="Image URL"
-            value={otherImages[n]}
-            onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
-        />)}
+            {(['0', '1', '2', '3']).map(n => <input 
+                key={n}
+                className="create-spot-input"
+                placeholder="Image URL"
+                value={otherImages[n]}
+                onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
+            />)}
+        </>}
 
         <button 
             type="submit"
             className="create-form-submit"
             onClick={handleSubmit}
-        >Create Spot</button>
+        >{spotId ? "Create Spot" : "Update Your Spot"}</button>
 
         </form>
     </>
