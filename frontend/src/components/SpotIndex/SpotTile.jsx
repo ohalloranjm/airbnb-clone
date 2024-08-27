@@ -40,7 +40,7 @@ export default function SpotTile({spot, manage}) {
         <button className="spot-tile-manage-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
         <OpenModalButton
             itemText="Delete" 
-            modalComponent={<ConfirmDeleteModal />}
+            modalComponent={<ConfirmDeleteModal spotId={spot.id} />}
         />
     </div> : null}
     </>
