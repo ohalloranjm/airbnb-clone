@@ -13,7 +13,7 @@ export default function ReviewTile({review, deleteOption}) {
         <p>{month} {year}</p>
         <p>{review.review}</p>
         {deleteOption ? <OpenModalButton 
-            modalComponent={<DeleteReviewModal />}
+            modalComponent={<DeleteReviewModal reviewId={review.id} />}
             buttonText='Delete'
         />: null}
     </div>

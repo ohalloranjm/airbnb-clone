@@ -14,7 +14,7 @@ export default function ConfirmDeleteModal({spotId}) {
         dispatch(deleteSpot(spotId))
             .then(closeModal)
             .catch(async res => {
-                const data = res.data;
+                const data = res.json();
                 if (data?.message) setError(data.message);
                 else setError("Something went wrong with your request. Please try refreshing the page, or logging out then logging back in.")
             })
