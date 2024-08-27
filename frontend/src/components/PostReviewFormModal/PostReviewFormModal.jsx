@@ -1,17 +1,20 @@
 import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { postReview } from "../../store/reviews";
+import { useModal } from "../../context/Modal";
 
 export default function PostReviewFormModal({spotId}) {
     const [review, setReview] = useState('');
     const [stars, setStars] = useState('');
     const [error, setError] = useState('')
     const dispatch = useDispatch();
+    const { closeModal } = useModal();
 
     const submitIsDisabled = review.length < 10 || stars === ''
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(postReview({ review, stars}, spotId))
+            .then(closeModal)
             .catch(e => setError(e.message));
     }
     
