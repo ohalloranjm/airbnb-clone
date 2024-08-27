@@ -43,6 +43,14 @@ export default function CreateSpotForm() {
                         setPrice(spot.price);
                     }
                 })
+        } else {
+            setCountry('');
+            setAddress('');
+            setCity('');
+            setState('');
+            setDescription('');
+            setName('');
+            setPrice('');
         }
     }, [dispatch, spotId])
 
