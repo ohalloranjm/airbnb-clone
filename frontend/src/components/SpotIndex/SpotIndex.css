@@ -46,3 +46,21 @@
 .hidden-tooltip {
     display: none;
 }
+
+@media (max-width: 1000px) {
+    .spot-index {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+    .spot-index {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .spot-index {
+        grid-template-columns: 1fr;
+    }
+}
