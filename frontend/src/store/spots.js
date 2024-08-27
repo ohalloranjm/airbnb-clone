@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 const LIST_SPOTS = 'spots/list';
 const DETAIL_SPOT = 'spots/detail';
+const UPDATE_SPOT = 'spots/update';
 
 const loadSpots = spots => {
   return {
@@ -13,6 +14,13 @@ const loadSpots = spots => {
 const detailSpot = spot => {
   return {
     type: DETAIL_SPOT,
+    spot,
+  };
+};
+
+const updateSpot = spot => {
+  return {
+    type: UPDATE_SPOT,
     spot,
   };
 };
@@ -51,6 +59,18 @@ export const postSpotOtherImage = (spotId, url) => async () => {
   return res;
 };
 
+export const putSpot = (spotId, spot) => async dispatch => {
+  const body = JSON.stringify(spot);
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  });
+  const data = await res.json();
+  dispatch(updateSpot(data));
+  return data;
+};
+
 const initialState = {};
 
 const spotsReducer = (state = initialState, action) => {
@@ -66,6 +86,29 @@ const spotsReducer = (state = initialState, action) => {
     case DETAIL_SPOT: {
       const { spot } = action;
       return { ...state, [spot.id]: spot };
+    }
+    case UPDATE_SPOT: {
+      const { spot } = action;
+      const newState = { ...state };
+      const spotToUpdate = newState[spot.id];
+      if (!spotToUpdate) {
+        newState[spot.id] = spot;
+      } else {
+        [
+          'id',
+          'ownerId',
+          'address',
+          'city',
+          'state',
+          'country',
+          'name',
+          'description',
+          'price',
+        ].forEach(key => {
+          if (key in spot) newState[spot.id][key] = spot[key];
+        });
+      }
+      return newState;
     }
     default:
       return state;

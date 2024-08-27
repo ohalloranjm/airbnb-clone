@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { round } from "../../utils";
 import { useState } from "react";
 
 export default function SpotTile({spot, manage}) {
 
     const [showTooltip, setShowTooltip] = useState(false);
+    const navigate = useNavigate();
 
     let { avgRating } = spot;
     avgRating = `★ ${avgRating ? round(avgRating, 1) : 'New!'}`
@@ -21,7 +22,7 @@ export default function SpotTile({spot, manage}) {
         return 'name-tooltip' + (showTooltip ? '' : ' hidden-tooltip');
     }
 
-    return <Link 
+    return <><Link 
             to={`/spots/${spot.id}`}
             className="spot-tile" 
             onPointerEnter={displayTooltip}
@@ -32,9 +33,10 @@ export default function SpotTile({spot, manage}) {
         <p className="spot-tile-location">{spot.city}, {spot.state}</p>
         <p className="spot-tile-rating">{avgRating}</p>
         <p className="spot-tile-price">${round(spot.price, 2)}/night</p>
-        { manage ? <div className="spot-tile-manage">
-            <button className="spot-tile-manage-button">Update</button>
-            <button className="spot-tile-manage-button">Delete</button>
-        </div> : null}
     </Link>
+    { manage ? <div className="spot-tile-manage">
+        <button className="spot-tile-manage-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+        <button className="spot-tile-manage-button">Delete</button>
+    </div> : null}
+    </>
 }
