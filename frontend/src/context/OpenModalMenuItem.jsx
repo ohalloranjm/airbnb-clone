@@ -17,4 +17,4 @@ export default function OpenModalMenuItem({
   return (
     <li onClick={onClick} className="link">{itemText}</li>
   );
-};
+}
