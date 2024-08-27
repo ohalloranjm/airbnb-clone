@@ -24,9 +24,9 @@ export default function ConfirmDeleteModal({spotId}) {
         <h2>Confirm Delete</h2>
         <p className="errors">{error}</p>
         <p>Are you sure you want to remove this spot?</p>
-        <div className="delete-spot-buttons">
-            <button className="delete-spot-yes" onClick={onDelete}>Yes (Delete Spot)</button>
-            <button className="delete-spot-no" onClick={closeModal}>No (Keep Spot)</button>
+        <div className="confirm-delete-buttons">
+            <button className="confirm-delete-yes" onClick={onDelete}>Yes (Delete Spot)</button>
+            <button className="confirm-delete-no" onClick={closeModal}>No (Keep Spot)</button>
         </div>
     </>
 }

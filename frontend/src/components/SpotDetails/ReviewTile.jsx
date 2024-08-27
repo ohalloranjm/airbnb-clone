@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { dateFromString } from "../../utils"
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteReviewModal from "../DeleteReviewModal/";
 
 export default function ReviewTile({review, deleteOption}) {
 
@@ -12,7 +13,7 @@ export default function ReviewTile({review, deleteOption}) {
         <p>{month} {year}</p>
         <p>{review.review}</p>
         {deleteOption ? <OpenModalButton 
-            modalComponent={null}
+            modalComponent={<DeleteReviewModal />}
             buttonText='Delete'
         />: null}
     </div>
