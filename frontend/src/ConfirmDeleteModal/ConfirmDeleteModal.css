@@ -1,7 +1,7 @@
-.delete-spot-yes {
+.confirm-delete-yes {
     background-color: red;
 }
 
-.delete-spot-no {
+.confirm-delete-no {
     background: gray;
 }

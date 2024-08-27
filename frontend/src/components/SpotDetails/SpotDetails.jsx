@@ -12,6 +12,7 @@ export default function SpotDetails () {
     const dispatch = useDispatch();
     const [refresh, setRefresh] = useState(0);
     useEffect(() => {
+        console.log('Back at it again at crispy creme')
         dispatch(getSpotDetails(spotId));
     }, [dispatch, spotId, refresh])
     const spot = useSelector(state => state.spots[spotId]);
@@ -19,6 +20,7 @@ export default function SpotDetails () {
     if (spot) {
 
         const reviewInfo = '★ ' + (spot.avgRating ? round(spot.avgRating, 1) : 'New!') + (spot.numReviews ? ` · ${spot.numReviews} review${spot.numReviews === 1 ? '' : 's'}` : '')
+        console.log(reviewInfo)
 
         return <>
             <SpotInfo spot={spot} reviewInfo={reviewInfo} />
