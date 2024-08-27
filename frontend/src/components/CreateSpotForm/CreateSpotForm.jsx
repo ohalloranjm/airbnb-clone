@@ -52,7 +52,7 @@ export default function CreateSpotForm() {
             setName('');
             setPrice('');
         }
-    }, [dispatch, spotId])
+    }, [dispatch, spotId, navigate, user])
 
     const handleSubmit = e => {
         e.preventDefault();

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { round } from "../../utils";
 import { useState } from "react";
+import OpenModalButton from "../../OpenModalButton/OpenModalButton";
+import ConfirmDeleteModal from "../../ConfirmDeleteModal/ConfirmDeleteModal";
 
 export default function SpotTile({spot, manage}) {
 
@@ -36,7 +38,10 @@ export default function SpotTile({spot, manage}) {
     </Link>
     { manage ? <div className="spot-tile-manage">
         <button className="spot-tile-manage-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
-        <button className="spot-tile-manage-button">Delete</button>
+        <OpenModalButton
+            itemText="Delete" 
+            modalComponent={<ConfirmDeleteModal spotId={spot.id} />}
+        />
     </div> : null}
     </>
 }
