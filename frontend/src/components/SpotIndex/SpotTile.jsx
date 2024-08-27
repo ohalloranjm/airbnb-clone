@@ -2,13 +2,9 @@ import { Link } from "react-router-dom";
 import { round } from "../../utils";
 import { useState } from "react";
 
-export default function SpotTile({spot}) {
+export default function SpotTile({spot, manage}) {
 
     const [showTooltip, setShowTooltip] = useState(false);
-    // useEffect(() => {
-    //     console.log('ugh')
-    //     return;
-    // }, [showTooltip])
 
     let { avgRating } = spot;
     avgRating = `★ ${avgRating ? round(avgRating, 1) : 'New!'}`
@@ -36,5 +32,9 @@ export default function SpotTile({spot}) {
         <p className="spot-tile-location">{spot.city}, {spot.state}</p>
         <p className="spot-tile-rating">{avgRating}</p>
         <p className="spot-tile-price">${round(spot.price, 2)}/night</p>
+        { manage ? <div className="spot-tile-manage">
+            <button className="spot-tile-manage-button">Update</button>
+            <button className="spot-tile-manage-button">Delete</button>
+        </div> : null}
     </Link>
 }
