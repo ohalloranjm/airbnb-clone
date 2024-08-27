@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpotDetails } from "../../store/spots";
@@ -10,9 +10,10 @@ import SpotInfo from "./SpotInfo";
 export default function SpotDetails () {
     const { spotId } = useParams();
     const dispatch = useDispatch();
+    const [refresh, setRefresh] = useState(0);
     useEffect(() => {
         dispatch(getSpotDetails(spotId));
-    }, [dispatch, spotId])
+    }, [dispatch, spotId, refresh])
     const spot = useSelector(state => state.spots[spotId]);
 
     if (spot) {
@@ -21,7 +22,7 @@ export default function SpotDetails () {
 
         return <>
             <SpotInfo spot={spot} reviewInfo={reviewInfo} />
-            <SpotReviews spot={spot} reviewInfo={reviewInfo} />
+            <SpotReviews spot={spot} reviewInfo={reviewInfo} refresh={refresh} setRefresh={setRefresh} />
         </>
     } else {
         return <h2>Could not find spot</h2>
