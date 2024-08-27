@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { getSpotDetails, postSpot, postSpotOtherImage } from "../../store/spots";
+import { getSpotDetails, postSpot, postSpotOtherImage, putSpot } from "../../store/spots";
 
 export default function CreateSpotForm() {
 
@@ -63,24 +63,32 @@ export default function CreateSpotForm() {
             country,
             name,
             description,
-            price,
-            previewImage
+            price
         }
-        dispatch(postSpot(newSpot))
-            .then(async (res) => {
-                const newSpot = await res.json();
-                const images = Object.values(otherImages).filter(i => i);
-                for (const image of images) {
-                    dispatch(postSpotOtherImage(newSpot.id, image));
-                }
-                return newSpot;
-            })
-            .then(({ id }) => navigate(`/spots/${id}`))
-            .catch(async (res) => {
-                console.error(res);
-                const data = await res.json();
-                if (data?.errors) setErrors(data.errors);
-            })
+        if (!spotId) {
+            newSpot.previewImage = previewImage;
+            dispatch(postSpot(newSpot))
+                .then(async (res) => {
+                    const newSpot = await res.json();
+                    const images = Object.values(otherImages).filter(i => i);
+                    for (const image of images) {
+                        dispatch(postSpotOtherImage(newSpot.id, image));
+                    }
+                    return newSpot;
+                })
+                .then(({ id }) => navigate(`/spots/${id}`))
+                .catch(async (res) => {
+                    const data = await res.json();
+                    if (data?.errors) setErrors(data.errors);
+                })
+        } else {
+            dispatch(putSpot(spotId, newSpot))
+                .then(() => navigate(`/spots/${spotId}`))
+                .catch(async res => {
+                    const data = await res.json();
+                    if (data?.errors) setErrors(data.errors);
+                })
+        }
     }
 
     return <>
@@ -178,7 +186,7 @@ export default function CreateSpotForm() {
             type="submit"
             className="create-form-submit"
             onClick={handleSubmit}
-        >{spotId ? "Create Spot" : "Update Your Spot"}</button>
+        >{spotId ? "Update Your Spot" : "Create Spot"}</button>
 
         </form>
     </>
