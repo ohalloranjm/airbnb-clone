@@ -25,6 +25,7 @@
     width: 150px;
     border: 2px solid blue;
     font-size: 0.9em;
+    background-color: rgb(238, 251, 255);
 }
 
 .profile-dropdown > li {
