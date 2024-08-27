@@ -3,8 +3,9 @@ import '../../ConfirmDeleteModal/ConfirmDeleteModal.css';
 import { deleteReview } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import { useState } from "react";
+import { getSpotDetails } from "../../store/spots";
 
-export default function DeleteReviewModal({reviewId}) {
+export default function DeleteReviewModal({reviewId, setRefresh, spotId}) {
 
     const dispatch = useDispatch();
     const { closeModal } = useModal();
@@ -12,6 +13,8 @@ export default function DeleteReviewModal({reviewId}) {
 
     const onDelete = () => {
         dispatch(deleteReview(reviewId))
+            .then(setRefresh(prev => prev + 1))
+            .then(() => dispatch(getSpotDetails(spotId)))
             .then(closeModal)
             .catch(async res => {
                 const data = res.json();
