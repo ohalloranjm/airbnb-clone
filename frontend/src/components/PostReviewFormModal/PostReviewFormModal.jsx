@@ -13,7 +13,6 @@ export default function PostReviewFormModal({spotId}) {
     const { closeModal } = useModal();
 
     const hover = (n) => () => setShowStars(n);
-    const stopHover = () => setShowStars(stars);
     const clickStar = (n) => (e) => {
         e.preventDefault();
         setStars(n);
