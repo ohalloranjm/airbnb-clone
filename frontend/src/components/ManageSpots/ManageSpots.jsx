@@ -14,12 +14,12 @@ export default function ManageSpots() {
 
     if (user) {
         const spots = Object.values(allSpots).filter(s => s.ownerId === user.id)
-        return <>
+        return <main>
             <h1>Manage Spots</h1>
             {spots.length ? <div className="spot-index">
                 {spots.map(spot => <SpotTile key={spot.id} spot={spot} manage={true} />)}
             </div> : <Link to="/spots/new">Create a new spot</Link>}
-        </>
+        </main>
     } else {
         return <Navigate to="/" />
     }
