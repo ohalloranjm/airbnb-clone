@@ -4,7 +4,6 @@
 }
 
 .create-spot-form > h2 {
-    margin-top: 20px;
     margin-bottom: 0.2em;
 }
 
@@ -21,4 +20,20 @@
 
 .sf-field > input {
     width: 100%;
+}
+
+.sf-city-state {
+    display: grid;
+    grid-template-columns: 2fr 5px 1fr;
+    gap: 10px;
+}
+
+.sf-comma {
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+}
+
+.sf-field-divider {
+    margin: 20px 0 10px;
 }

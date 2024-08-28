@@ -125,31 +125,37 @@ export default function CreateSpotForm() {
             />
         </div>
 
-        <div className="sf-field sf-city">
-            <label>
-            City 
-            <span className="errors">{errors.city ? ' ' + errors.city : null}</span>
-            </label>
-            <input 
-                className="create-spot-input"
-                placeholder="City"
-                value={city}
-                onChange={e => setCity(e.target.value)}
-            />
+        <div className="sf-field sf-city-state">
+            <div className="sf-field sf-city">
+                <label>
+                City 
+                <span className="errors">{errors.city ? ' ' + errors.city : null}</span>
+                </label>
+                <input 
+                    className="create-spot-input"
+                    placeholder="City"
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                />
+            </div>
+
+            <div className="sf-comma">,</div>
+
+            <div className="sf-field sf-state">
+                <label>
+                State 
+                <span className="errors">{errors.state ? ' ' + errors.state : null}</span>
+                </label>
+                <input 
+                    className="create-spot-input"
+                    placeholder="State"
+                    value={state}
+                    onChange={e => setState(e.target.value)}
+                />
+            </div>
         </div>
 
-        <div className="sf-field sf-state">
-            <label>
-            State 
-            <span className="errors">{errors.state ? ' ' + errors.state : null}</span>
-            </label>
-            <input 
-                className="create-spot-input"
-                placeholder="State"
-                value={state}
-                onChange={e => setState(e.target.value)}
-            />
-        </div>
+        <hr className="sf-field-divider" />
 
         <h2>Describe your place to guests</h2>
         <p className="create-spot-caption">Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
