@@ -5,12 +5,19 @@
     row-gap: 30px;
 }
 
+.spot-tile-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .spot-tile {
     display: grid;
     grid-template-areas: 
         "spot-tile-image spot-tile-image"
         "spot-tile-location spot-tile-rating"
-        "spot-tile-price .";
+        "spot-tile-price ."
+        "spot-tile-buttons spot-tile-buttons";
     color: inherit
 }
 
@@ -36,6 +43,11 @@
     grid-area: spot-tile-price
 }
 
+.spot-tile-manage {
+    grid-area: spot-tile-buttons;
+    display: flex;
+}
+
 .name-tooltip {
     position: absolute;
     background-color: black;
@@ -44,4 +56,22 @@
 
 .hidden-tooltip {
     display: none;
+}
+
+@media (max-width: 1000px) {
+    .spot-index {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+    .spot-index {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .spot-index {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

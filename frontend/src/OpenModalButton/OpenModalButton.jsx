@@ -15,6 +15,6 @@ export default function OpenModalButton({
   };
 
   return (
-    <button onClick={onClick} className="link">{itemText}</button>
+    <button onClick={onClick} className="real-button link">{itemText}</button>
   );
 }
