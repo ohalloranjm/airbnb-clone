@@ -1,11 +1,62 @@
-.sd-image-primary {
-    width: 100px;
+.si-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
-.sd-image-secondary {
-    width: 50px;
+.si-images-secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
 }
 
-.sd-callout {
-    border: 1px black solid;
+.si-below-images {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.si-host {
+    margin-top: 0
+}
+
+.si-callout {
+    display: grid;
+    grid-template-areas: 
+        "price reviews"
+        "reserve reserve";
+    border: 2px black solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.si-callout-price {
+    grid-area: price
+}
+
+.si-callout-price-number {
+    font-family: "Comic Sans", Arial, Helvetica, sans-serif;
+    font-size: 1.3em;
+}
+
+.si-callout-reviews {
+    grid-area: reviews;
+    text-align: right;
+}
+
+.si-callout-reserve {
+    grid-area: reserve;
+    font-size: 1.5em;
+    border: 2px darkblue;
+    box-shadow: 2px 2px blue;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+.si-callout-reserve:hover {
+    background-color: blue;
+    box-shadow: 2px 2px lightblue;
+    color: white;
 }
