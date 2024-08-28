@@ -3,6 +3,11 @@
     margin: auto;
 }
 
+.create-spot-form > h2 {
+    margin-top: 20px;
+    margin-bottom: 0.2em;
+}
+
 .sf-field {
     margin-bottom: 10px;
 }
