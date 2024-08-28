@@ -16,9 +16,9 @@
     grid-template-areas: 
         "spot-tile-image spot-tile-image"
         "spot-tile-location spot-tile-rating"
-        "spot-tile-price ."
-        "spot-tile-buttons spot-tile-buttons";
-    color: inherit
+        "spot-tile-price .";
+    grid-template-rows: 1;
+    color: inherit;
 }
 
 .spot-tile:hover {
@@ -27,7 +27,9 @@
 }
 
 .spot-tile-image {
-    grid-area: spot-tile-image
+    grid-area: spot-tile-image;
+    object-fit: cover;
+    height: 300px;
 }
 
 .spot-tile-location {

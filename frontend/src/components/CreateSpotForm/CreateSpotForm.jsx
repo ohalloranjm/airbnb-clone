@@ -57,26 +57,62 @@ export default function CreateSpotForm() {
 
     const validImageExtns = ['.png', '.jpg', '.jpeg']
 
+    const maxlen = {
+        country: 100,
+        address: 1000,
+        city: 50,
+        state: 50,
+        description: 5000,
+        name: 49,
+        image: 1000
+    }
+
+    const setToMax = (setValue, key, newValue) => {
+        const max = maxlen[key];
+        if (newValue?.length <= max) setValue(newValue)
+        else setValue(String(newValue).slice(0, max))
+    }
+
     const frontendValidation = () => {
         const newErrors = {};
+
         if (!country) newErrors.country = 'Country is required'
+        else if (country.length > 100) newErrors.country = 'Country cannot be greater than 100 characters'
+        
         if (!address) newErrors.address = 'Street address is required'
-        if (!city) newErrors.address = 'City is required'
+        else if (address.length > 1000) newErrors.address = 'Street address cannot be greater than 1,000 characters'
+        
+        if (!city) newErrors.city = 'City is required'
+        else if (city.length > 50) newErrors.city = 'City cannot be greater than 50 characters'
+        
         if (!state) newErrors.state = 'State is required'
+        else if (state.length > 50) newErrors.state = 'State cannot be greater than 50 characters'
+        
         if (description.length < 30) newErrors.description = 'Description must be 30 or more characters'
+        else if (description.length > 10000) newErrors.description = 'Description cannot be greater than 10,0000 characters'
+        
+        if (!name) newErrors.name = 'Name is required'
+        else if (country.length > 500) newErrors.country = 'Name cannot be greater than 500 characters'
+
         if (price === '') newErrors.price = 'Price is required'
-        if (price <= 0) newErrors.price = 'Price per day must be a positive number'
+        else if (price <= 0) newErrors.price = 'Price per day must be a positive number'
+        else if (price > 999999999) newErrors.price = 'Price per day cannot be greater than $999,999,999'
+
         if (!spotId) {
             if (!previewImage) {
                 newErrors.url = 'Preview Image URL is required'
             } else if (!validImageExtns.some(ext => previewImage.endsWith(ext))) {
                 newErrors.url = 'Image URL must end in .png, .jpg, or .jpeg'
+            } else if (previewImage.length > 1000) {
+                newErrors.url = 'Image URL cannot be greater than 1,000 characters'
             }
 
             ['0', '1', '2', '3'].forEach(n => {
                 if (otherImages[n] && !validImageExtns.some(ext => otherImages[n].endsWith(ext))) {
                     newErrors.otherImages = newErrors.otherImages || {};
                     newErrors.otherImages[n] = 'Image URL must end in .png, .jpg, or .jpeg'
+                } else if (otherImages[n] && otherImages[n].length > 1000) {
+                    newErrors.otherImages[n] = 'Image URL cannot be greater than 1,000 characters'
                 }
             })
         }
@@ -116,8 +152,15 @@ export default function CreateSpotForm() {
                 dispatch(putSpot(spotId, newSpot))
                     .then(() => navigate(`/spots/${spotId}`))
                     .catch(async res => {
-                        const data = await res.json();
-                        if (data?.errors) setErrors(data.errors);
+                        if (res.status === 413) {
+                            setErrors({top: "Woah, that was too much data for our server to handle. Try writing a shorter description—and make sure your cat didn't fall asleep on the keyboard anywhere."})
+                        } else {
+                            const data = await res.json();
+
+                            if (data?.errors) setErrors(data.errors);
+                            else if (data?.message) setErrors({top: data.message});
+                            else setErrors({top: 'Sorry, something went wrong. Try refreshing the page, or logging out then logging back in.'})
+                        }
                     })
             }
         } catch(e) {
@@ -128,6 +171,8 @@ export default function CreateSpotForm() {
     return <div className="create-spot">
         <h1>{spotId ? "Update Your Spot" : "Create a New Spot"}</h1>
         <form className="create-spot-form">
+
+            <p className="errors">{errors.top}</p>
 
         <h2>Where’s your place located?</h2>
         <p className="create-spot-caption">Guests will only get your exact address once they booked a reservation.</p>
@@ -141,7 +186,7 @@ export default function CreateSpotForm() {
                 className="create-spot-input"
                 placeholder="Country"
                 value={country}
-                onChange={e => setCountry(e.target.value)}
+                onChange={e => setToMax(setCountry, 'country', e.target.value)}
             />
         </div>
 
@@ -154,7 +199,7 @@ export default function CreateSpotForm() {
                 className="create-spot-input"
                 placeholder="Street Address"
                 value={address}
-                onChange={e => setAddress(e.target.value)}
+                onChange={e => setToMax(setAddress, 'address', e.target.value)}
             />
         </div>
 
@@ -168,7 +213,7 @@ export default function CreateSpotForm() {
                     className="create-spot-input"
                     placeholder="City"
                     value={city}
-                    onChange={e => setCity(e.target.value)}
+                    onChange={e => setToMax(setCity, 'city', e.target.value)}
                 />
             </div>
 
@@ -183,7 +228,7 @@ export default function CreateSpotForm() {
                     className="create-spot-input"
                     placeholder="State"
                     value={state}
-                    onChange={e => setState(e.target.value)}
+                    onChange={e => setToMax(setState, 'state', e.target.value)}
                 />
             </div>
         </div>
@@ -197,7 +242,7 @@ export default function CreateSpotForm() {
             className="create-spot-input"
             placeholder="Please write at least 30 characters"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={e => setToMax(setDescription, 'description', e.target.value)}
         />
         <p className="errors">{errors.description || null}</p>
 
@@ -209,7 +254,7 @@ export default function CreateSpotForm() {
             className="create-spot-input"
             placeholder="Name your spot"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={e => setToMax(setName, 'name', e.target.value)}
         />
         <p className="errors">{errors.name || null}</p>
 
@@ -240,7 +285,7 @@ export default function CreateSpotForm() {
                 placeholder="Preview Image URL"
                 value={previewImage}
                 key="-1 input"
-                onChange={e => setPreviewImage(e.target.value)}
+                onChange={e => setToMax(setPreviewImage, 'image', e.target.value)}
             />
             <p key="-1 errors" className="errors">{errors.url || null}</p>
 
@@ -249,7 +294,7 @@ export default function CreateSpotForm() {
                 className="create-spot-input"
                 placeholder="Image URL"
                 value={otherImages[n]}
-                onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
+                onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: String(e.target.value).slice(0, maxlen.image)}))}
             />
             <p className="errors" key={`${n} errors`}>{errors.otherImages && errors.otherImages[n] || null}</p>
             </div>
