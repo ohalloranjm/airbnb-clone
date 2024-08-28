@@ -9,9 +9,9 @@ export default function ReviewTile({review, deleteOption, setRefresh}) {
     const defaultUser = useSelector(state => state.session.user);
 
     return <div className="review-tile">
-        <p>{review.User ? review.User.firstName : defaultUser?.firstName}</p>
-        <p>{month} {year}</p>
-        <p>{review.review}</p>
+        <p className="review-tile-name">{review.User ? review.User.firstName : defaultUser?.firstName}</p>
+        <p className="review-tile-date">{month} {year}</p>
+        <p  className="review-tile-year">{review.review}</p>
         {deleteOption ? <OpenModalButton 
             modalComponent={<DeleteReviewModal reviewId={review.id} spotId={review.spotId} setRefresh={setRefresh} />}
             buttonText='Delete'

@@ -22,7 +22,7 @@ export default function DeleteReviewModal({reviewId, setRefresh, spotId}) {
             })
     }
 
-    return <>
+    return <div className="confirm-delete">
         <h2>Confirm Delete</h2>
         <p className="errors">{error}</p>
         <p>Are you sure you want to delete this review?</p>
@@ -30,5 +30,5 @@ export default function DeleteReviewModal({reviewId, setRefresh, spotId}) {
             <button className="confirm-delete-yes" onClick={onDelete}>Yes (Delete Review)</button>
             <button className="confirm-delete-no" onClick={closeModal}>No (Keep Review)</button>
         </div>
-    </>
+    </div>
 }

@@ -1,7 +1,23 @@
+.confirm-delete {
+    padding: 10px;
+    border: 3px solid blue;
+}
+
 .confirm-delete-yes {
     background-color: red;
+    box-shadow: 2px 2px lightblue;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 .confirm-delete-no {
     background: gray;
+    box-shadow: 2px 2px lightblue;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
 }

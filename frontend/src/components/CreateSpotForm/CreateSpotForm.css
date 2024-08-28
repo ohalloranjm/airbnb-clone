@@ -1,0 +1,85 @@
+.create-spot {
+    width: 500px;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+.create-spot-form > h2 {
+    margin-bottom: 0.2em;
+}
+
+.sf-field {
+    margin-bottom: 10px;
+}
+
+.sf-field > label {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 0.2em;
+    color: rgb(27, 27, 27);
+}
+
+.create-spot-input {
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+textarea.create-spot-input {
+    height: 200px;
+}
+
+.sf-city-state {
+    display: grid;
+    grid-template-columns: 2fr 5px 1fr;
+    gap: 10px;
+}
+
+.sf-comma {
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+}
+
+.sf-price {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    grid-template-areas: 
+        "price-dollar price-input"
+        "price-error price-error"
+}
+
+.sf-dollar {
+    font-size: 1.3em;
+    grid-area: price-dollar
+}
+
+.sf-price-input {
+    grid-area: price-input
+}
+
+.sf-price-errors {
+    grid-area: price-error
+}
+
+.sf-field-divider {
+    margin: 20px 0 10px;
+}
+
+.create-form-submit {
+    font-size: 1.5em;
+    border: 2px solid darkblue;
+    box-shadow: 2px 2px lightblue;
+    background-color: blue;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    margin: auto;
+    display: block;
+}
+
+.create-form-submit:hover {
+    background-color: lightblue;
+    border: 2px solid blue;
+    box-shadow: 2px 2xp darkblue;
+    color: black;
+}
