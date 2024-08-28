@@ -4,7 +4,7 @@ import { postReview, getReviewsBySpotId } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import './PostReviewFormModal.css'
 
-export default function PostReviewFormModal({spotId, setRefresh}) {
+export default function PostReviewFormModal({spotId}) {
     const [review, setReview] = useState('');
     const [stars, setStars] = useState('');
     const [error, setError] = useState('')
@@ -16,7 +16,6 @@ export default function PostReviewFormModal({spotId, setRefresh}) {
         e.preventDefault();
         dispatch(postReview({ review, stars}, spotId))
             .then(dispatch(getReviewsBySpotId(spotId)))
-            .then(setRefresh(prev => prev + 1))
             .then(closeModal)
             .catch(e => setError(e.message));
     }

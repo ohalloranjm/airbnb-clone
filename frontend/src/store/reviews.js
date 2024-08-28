@@ -1,4 +1,5 @@
 import { csrfFetch } from './csrf';
+import { getSpotDetails } from './spots';
 
 const LOAD_REVIEWS = 'reviews/showBySpot';
 const REMOVE_REVIEW = 'reviews/remove';
@@ -33,6 +34,7 @@ export const postReview = (review, spotId) => async dispatch => {
   });
   const data = await res.json();
   dispatch(loadReviews([data]));
+  dispatch(getSpotDetails(spotId));
   return data;
 };
 
