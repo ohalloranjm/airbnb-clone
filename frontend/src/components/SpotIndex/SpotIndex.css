@@ -48,6 +48,10 @@
     display: flex;
 }
 
+.spot-tile-manage-button {
+    margin-right: 5px;
+}
+
 .name-tooltip {
     position: absolute;
     background-color: black;
