@@ -18,8 +18,13 @@
     color: rgb(27, 27, 27);
 }
 
-.sf-field > input {
+.create-spot-input {
     width: 100%;
+    margin-bottom: 0.5em;
+}
+
+textarea.create-spot-input {
+    height: 200px;
 }
 
 .sf-city-state {

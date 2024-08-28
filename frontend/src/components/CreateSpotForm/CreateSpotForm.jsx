@@ -168,6 +168,8 @@ export default function CreateSpotForm() {
         />
         <p className="errors">{errors.description || null}</p>
 
+        <hr className="sf-field-divider" />
+
         <h2>Create a title for your spot</h2>
         <p className="create-spot-caption">Catch guests’ attention with a spot title that highlights what makes your place special</p>
         <input 
@@ -178,15 +180,20 @@ export default function CreateSpotForm() {
         />
         <p className="errors">{errors.name || null}</p>
 
+        <hr className="sf-field-divider" />
+
         <h2>Set a base price for your spot</h2>
         <p className="create-spot-caption">Competitive pricing can help your listing stand out and rank higher in search results.</p>
         <input 
             type="number"
             placeholder="Price per night (USD)"
+            className="create-spot-input"
             value={price}
             onChange={e => setPrice(e.target.value)}
         />
         <p className="errors">{errors.price || null}</p>
+
+        <hr className="sf-field-divider" />
 
         {spotId ? null : <>
             <h2>Liven up your spot with photos</h2>
@@ -208,6 +215,8 @@ export default function CreateSpotForm() {
                 onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
             />)}
         </>}
+
+        <hr className="sf-field-divider" />
 
         <button 
             type="submit"
