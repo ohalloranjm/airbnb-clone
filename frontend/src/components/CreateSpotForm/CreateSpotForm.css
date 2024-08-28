@@ -1,6 +1,7 @@
 .create-spot {
     width: 500px;
     margin: auto;
+    padding-bottom: 20px;
 }
 
 .create-spot-form > h2 {
@@ -62,4 +63,23 @@ textarea.create-spot-input {
 
 .sf-field-divider {
     margin: 20px 0 10px;
+}
+
+.create-form-submit {
+    font-size: 1.5em;
+    border: 2px solid darkblue;
+    box-shadow: 2px 2px lightblue;
+    background-color: blue;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    margin: auto;
+    display: block;
+}
+
+.create-form-submit:hover {
+    background-color: lightblue;
+    border: 2px solid blue;
+    box-shadow: 2px 2xp darkblue;
+    color: black;
 }
