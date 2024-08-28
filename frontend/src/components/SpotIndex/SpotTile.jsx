@@ -24,11 +24,14 @@ export default function SpotTile({spot, manage}) {
         return 'name-tooltip' + (showTooltip ? '' : ' hidden-tooltip');
     }
 
-    return <><Link 
+    return <>
+    <div 
+            className="spot-tile-wrapper" >
+    <Link 
             to={`/spots/${spot.id}`}
-            className="spot-tile" 
             onPointerEnter={displayTooltip}
             onPointerLeave={closeTooltip}
+            className="spot-tile"
         >
         <img className="spot-tile-image" src={spot.previewImage} alt={spot.name} />
         <div className={tooltipClassName()}>{spot.name}</div>
@@ -37,11 +40,12 @@ export default function SpotTile({spot, manage}) {
         <p className="spot-tile-price">${round(spot.price, 2)}/night</p>
     </Link>
     { manage ? <div className="spot-tile-manage">
-        <button className="spot-tile-manage-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+        <button className="real-button spot-tile-manage-button" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
         <OpenModalButton
             itemText="Delete" 
             modalComponent={<ConfirmDeleteModal spotId={spot.id} />}
         />
     </div> : null}
+    </div>
     </>
 }

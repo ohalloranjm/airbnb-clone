@@ -11,7 +11,7 @@ export default function SpotIndex() {
         dispatch(getSpots());
     }, [dispatch])
 
-    return <div className="spot-index">
+    return <main className="spot-index">
         {Object.values(spots).map(spot => <SpotTile key={spot.id} spot={spot} />)}
-    </div>
+    </main>
 }

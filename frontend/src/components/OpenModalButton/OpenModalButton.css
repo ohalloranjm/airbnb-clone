@@ -1,0 +1,15 @@
+.open-modal-button {
+    border: 2px solid darkblue;
+    box-shadow: 2px 2px lightblue;
+    background-color: blue;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.open-modal-button:hover {
+    background-color: lightblue;
+    border: 2px solid blue;
+    box-shadow: 2px 2xp darkblue;
+    color: black;
+}
