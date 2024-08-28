@@ -17,7 +17,6 @@
         "spot-tile-image spot-tile-image"
         "spot-tile-location spot-tile-rating"
         "spot-tile-price .";
-    grid-template-rows: 1;
     color: inherit;
 }
 
@@ -30,6 +29,7 @@
     grid-area: spot-tile-image;
     object-fit: cover;
     height: 300px;
+    width: 100%;
 }
 
 .spot-tile-location {
