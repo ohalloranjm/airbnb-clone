@@ -184,14 +184,17 @@ export default function CreateSpotForm() {
 
         <h2>Set a base price for your spot</h2>
         <p className="create-spot-caption">Competitive pricing can help your listing stand out and rank higher in search results.</p>
-        <input 
-            type="number"
-            placeholder="Price per night (USD)"
-            className="create-spot-input"
-            value={price}
-            onChange={e => setPrice(e.target.value)}
-        />
-        <p className="errors">{errors.price || null}</p>
+        <div className="sf-field sf-price">
+            <div className="sf-dollar">$</div>
+            <input 
+                type="number"
+                placeholder="Price per night (USD)"
+                className="create-spot-input sf-price-input"
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+            />
+            <p className="errors sf-price-errors">{errors.price || null}</p>
+        </div>
 
         <hr className="sf-field-divider" />
 

@@ -39,6 +39,27 @@ textarea.create-spot-input {
     font-size: 2em;
 }
 
+.sf-price {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    grid-template-areas: 
+        "price-dollar price-input"
+        "price-error price-error"
+}
+
+.sf-dollar {
+    font-size: 1.3em;
+    grid-area: price-dollar
+}
+
+.sf-price-input {
+    grid-area: price-input
+}
+
+.sf-price-errors {
+    grid-area: price-error
+}
+
 .sf-field-divider {
     margin: 20px 0 10px;
 }
