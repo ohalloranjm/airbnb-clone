@@ -60,3 +60,29 @@
     box-shadow: 2px 2px lightblue;
     color: white;
 }
+
+.spot-details-reviews {
+    margin-top: 20px;
+    border-top: 1px black solid;
+}
+
+.review-tile {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.review-tile-name {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+
+}
+
+.review-tile-date {
+    color: darkgray;
+    margin-bottom: 10px;
+}
+
+.spot-reviews-befirst {
+    margin-top: 20px;
+    font-style: italic;
+}

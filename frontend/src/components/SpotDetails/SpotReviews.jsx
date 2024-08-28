@@ -25,6 +25,6 @@ export default function SpotReviews({spot, reviewInfo, setRefresh, refresh}) {
             modalComponent={<PostReviewFormModal setRefresh={setRefresh} spotId={spot.id} />}
         /> : null}
         {reviews.map(r => <ReviewTile setRefresh={setRefresh} key={r.id} review={r} deleteOption={r.userId === user?.id} />)}
-        {shouldPromptReview && !reviews.length ? <p>Be the first to post a review!</p> : null}
+        {shouldPromptReview && !reviews.length ? <p className="spot-reviews-befirst">Be the first to post a review!</p> : null}
     </div>
 }
