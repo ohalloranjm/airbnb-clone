@@ -55,6 +55,34 @@ export default function CreateSpotForm() {
         }
     }, [dispatch, spotId, navigate, user])
 
+    const validImageExtns = ['.png', '.jpg', '.jpeg']
+
+    const frontendValidation = () => {
+        const newErrors = {};
+        if (!country) newErrors.country = 'Country is required'
+        if (!address) newErrors.address = 'Street address is required'
+        if (!city) newErrors.address = 'City is required'
+        if (!state) newErrors.state = 'State is required'
+        if (description.length < 30) newErrors.description = 'Description must be 30 or more characters'
+        if (price === '') newErrors.price = 'Price is required'
+        if (price <= 0) newErrors.price = 'Price per day must be a positive number'
+        if (!spotId) {
+            if (!previewImage) {
+                newErrors.url = 'Preview Image URL is required'
+            } else if (!validImageExtns.some(ext => previewImage.endsWith(ext))) {
+                newErrors.url = 'Image URL must end in .png, .jpg, or .jpeg'
+            }
+
+            ['0', '1', '2', '3'].forEach(n => {
+                if (otherImages[n] && !validImageExtns.some(ext => otherImages[n].endsWith(ext))) {
+                    newErrors.otherImages = newErrors.otherImages || {};
+                    newErrors.otherImages[n] = 'Image URL must end in .png, .jpg, or .jpeg'
+                }
+            })
+        }
+        if (Object.keys(newErrors).length) throw newErrors;
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         const newSpot = {
@@ -66,29 +94,34 @@ export default function CreateSpotForm() {
             description,
             price
         }
-        if (!spotId) {
-            newSpot.previewImage = previewImage;
-            dispatch(postSpot(newSpot))
-                .then(async (res) => {
-                    const newSpot = await res.json();
-                    const images = Object.values(otherImages).filter(i => i);
-                    for (const image of images) {
-                        dispatch(postSpotOtherImage(newSpot.id, image));
-                    }
-                    return newSpot;
-                })
-                .then(({ id }) => navigate(`/spots/${id}`))
-                .catch(async (res) => {
-                    const data = await res.json();
-                    if (data?.errors) setErrors(data.errors);
-                })
-        } else {
-            dispatch(putSpot(spotId, newSpot))
-                .then(() => navigate(`/spots/${spotId}`))
-                .catch(async res => {
-                    const data = await res.json();
-                    if (data?.errors) setErrors(data.errors);
-                })
+        try {
+            frontendValidation();
+            if (!spotId) {
+                newSpot.previewImage = previewImage;
+                dispatch(postSpot(newSpot))
+                    .then(async (res) => {
+                        const newSpot = await res.json();
+                        const images = Object.values(otherImages).filter(i => i);
+                        for (const image of images) {
+                            dispatch(postSpotOtherImage(newSpot.id, image));
+                        }
+                        return newSpot;
+                    })
+                    .then(({ id }) => navigate(`/spots/${id}`))
+                    .catch(async (res) => {
+                        const data = await res.json();
+                        if (data?.errors) setErrors(data.errors);
+                    })
+            } else {
+                dispatch(putSpot(spotId, newSpot))
+                    .then(() => navigate(`/spots/${spotId}`))
+                    .catch(async res => {
+                        const data = await res.json();
+                        if (data?.errors) setErrors(data.errors);
+                    })
+            }
+        } catch(e) {
+            setErrors(e);
         }
     }
 
@@ -206,17 +239,21 @@ export default function CreateSpotForm() {
                 className="create-spot-input"
                 placeholder="Preview Image URL"
                 value={previewImage}
+                key="-1 input"
                 onChange={e => setPreviewImage(e.target.value)}
             />
-            <p className="errors">{errors.url || null}</p>
+            <p key="-1 errors" className="errors">{errors.url || null}</p>
 
-            {(['0', '1', '2', '3']).map(n => <input 
+            {(['0', '1', '2', '3']).map(n => <div key={`${n} ${n}`}><input 
                 key={n}
                 className="create-spot-input"
                 placeholder="Image URL"
                 value={otherImages[n]}
                 onChange={e => setOtherImages(prevOtherImages => ({...prevOtherImages, [n]: e.target.value}))}
-            />)}
+            />
+            <p className="errors" key={`${n} errors`}>{errors.otherImages && errors.otherImages[n] || null}</p>
+            </div>
+            )}
         </>}
 
         <hr className="sf-field-divider" />
