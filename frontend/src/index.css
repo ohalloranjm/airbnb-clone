@@ -30,6 +30,7 @@ img {
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 5px;
+    background-color: rgb(197, 241, 255)
 }
 
 .hidden {

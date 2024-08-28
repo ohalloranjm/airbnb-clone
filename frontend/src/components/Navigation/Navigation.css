@@ -2,9 +2,19 @@
     height: 50px;
 }
 
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2em;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px gray solid;
+    padding-bottom: 3px;
 }
 
 .navbar-right {
