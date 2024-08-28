@@ -6,12 +6,20 @@ import './PostReviewFormModal.css'
 
 export default function PostReviewFormModal({spotId}) {
     const [review, setReview] = useState('');
-    const [stars, setStars] = useState('');
+    const [stars, setStars] = useState(0);
+    const [showStars, setShowStars] = useState(0);
     const [error, setError] = useState('')
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
-    const submitIsDisabled = review.length < 10 || stars === ''
+    const hover = (n) => () => setShowStars(n);
+    const stopHover = () => setShowStars(stars);
+    const clickStar = (n) => (e) => {
+        e.preventDefault();
+        setStars(n);
+    }
+
+    const submitIsDisabled = review.length < 10 || !stars
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(postReview({ review, stars}, spotId))
@@ -30,17 +38,14 @@ export default function PostReviewFormModal({spotId}) {
                 onChange={e => setReview(e.target.value)}
             />
             <label>
-            <select 
-                value={stars}
-                onChange={e => setStars(e.target.value)}
-            >
-                <option value=""></option>
-                <option value="1">★</option>
-                <option value="2">★★</option>
-                <option value="3">★★★</option>
-                <option value="4">★★★★</option>
-                <option value="5">★★★★★</option>
-            </select>
+                {[1, 2, 3, 4, 5].map(n => <button 
+                    key={String(n)} 
+                    onPointerEnter={hover(n)}
+                    onPointerLeave={hover(stars)}
+                    onClick={clickStar(n)}
+                    >{ showStars >= n ? '★' : '✰'}</button>)
+                }
+                
             Stars
             </label>
             <button

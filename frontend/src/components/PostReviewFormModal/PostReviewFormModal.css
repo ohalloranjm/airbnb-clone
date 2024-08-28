@@ -16,7 +16,13 @@
 }
 
 .post-review-form > label {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* grid-template-columns: repeat(5, 1fr) auto; */
     gap: 5px;
+}
+
+.post-review-form > label > button {
+    font-size: 3em;
 }
