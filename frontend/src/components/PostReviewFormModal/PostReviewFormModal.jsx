@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { postReview, getReviewsBySpotId } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
+import './PostReviewFormModal.css'
 
 export default function PostReviewFormModal({spotId, setRefresh}) {
     const [review, setReview] = useState('');
@@ -20,10 +21,10 @@ export default function PostReviewFormModal({spotId, setRefresh}) {
             .catch(e => setError(e.message));
     }
     
-    return <>
+    return <div className="post-review">
         <h1>How was your stay?</h1>
         {error?.length ? <p className="errors">{error}</p> : null}
-        <form>
+        <form className="post-review-form">
             <textarea 
                 placeholder="Leave your review here…"
                 value={review}
@@ -45,11 +46,12 @@ export default function PostReviewFormModal({spotId, setRefresh}) {
             </label>
             <button
                 type='submit'
+                className="real-button"
                 onClick={handleSubmit}
                 disabled={submitIsDisabled}
             >
                 Submit Your Review
             </button>
         </form>
-    </>
+    </div>
 }
