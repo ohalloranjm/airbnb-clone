@@ -49,3 +49,21 @@ body {
     font-size: 0.8em;
     color: red;
 }
+
+#root > main {
+    width: 95%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-top: 0.5em;
+}
+
+p {
+    margin-bottom: 1em;
+}

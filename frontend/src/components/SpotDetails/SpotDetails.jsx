@@ -20,12 +20,11 @@ export default function SpotDetails () {
     if (spot) {
 
         const reviewInfo = '★ ' + (spot.avgRating ? round(spot.avgRating, 1) : 'New!') + (spot.numReviews ? ` · ${spot.numReviews} review${spot.numReviews === 1 ? '' : 's'}` : '')
-        console.log(reviewInfo)
 
-        return <>
+        return <main>
             <SpotInfo spot={spot} reviewInfo={reviewInfo} />
             <SpotReviews spot={spot} reviewInfo={reviewInfo} refresh={refresh} setRefresh={setRefresh} />
-        </>
+        </main>
     } else {
         return <h2>Could not find spot</h2>
     }

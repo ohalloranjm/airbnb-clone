@@ -39,6 +39,16 @@ module.exports = {
         preview: false,
       },
       {
+        spotId: spotIds[0],
+        url: '/ocean5.png',
+        preview: false,
+      },
+      {
+        spotId: spotIds[0],
+        url: '/ocean6.png',
+        preview: false,
+      },
+      {
         spotId: spotIds[1],
         url: '/underwater.png',
         preview: true,
