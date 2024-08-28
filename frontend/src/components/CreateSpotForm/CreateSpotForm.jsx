@@ -62,7 +62,7 @@ export default function CreateSpotForm() {
         address: 1000,
         city: 50,
         state: 50,
-        description: 5000,
+        description: 1000,
         name: 49,
         image: 1000
     }
