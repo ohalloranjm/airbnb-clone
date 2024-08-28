@@ -1,0 +1,21 @@
+.post-review {
+    padding: 20px;
+    border: 3px solid blue;
+    width: 400px;
+}
+
+.post-review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-review-form > textarea {
+    height: 150px;
+}
+
+.post-review-form > label {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px;
+}
