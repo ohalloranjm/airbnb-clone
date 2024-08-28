@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { getSpotDetails, postSpot, postSpotOtherImage, putSpot } from "../../store/spots";
+import './CreateSpotForm.css'
 
 export default function CreateSpotForm() {
 
@@ -91,44 +92,64 @@ export default function CreateSpotForm() {
         }
     }
 
-    return <>
+    return <div className="create-spot">
         <h1>{spotId ? "Update Your Spot" : "Create a New Spot"}</h1>
         <form className="create-spot-form">
 
         <h2>Where’s your place located?</h2>
         <p className="create-spot-caption">Guests will only get your exact address once they booked a reservation.</p>
 
-        <input 
-            className="create-spot-input"
-            placeholder="Country"
-            value={country}
-            onChange={e => setCountry(e.target.value)}
-        />
-        <p className="errors">{errors.country || null}</p>
+        <div className="sf-field sf-country">
+            <label>
+            Country 
+            <span className="errors">{errors.country ? ' ' + errors.country : null}</span>
+            </label>
+            <input 
+                className="create-spot-input"
+                placeholder="Country"
+                value={country}
+                onChange={e => setCountry(e.target.value)}
+            />
+        </div>
 
-        <input 
-            className="create-spot-input"
-            placeholder="Street Address"
-            value={address}
-            onChange={e => setAddress(e.target.value)}
-        />
-        <p className="errors">{errors.address || null}</p>
-        
-        <input 
-            className="create-spot-input"
-            placeholder="City"
-            value={city}
-            onChange={e => setCity(e.target.value)}
-        />
-        <p className="errors">{errors.city || null}</p>
-        
-        <input 
-            className="create-spot-input"
-            placeholder="State"
-            value={state}
-            onChange={e => setState(e.target.value)}
-        />
-        <p className="errors">{errors.state || null}</p>
+        <div className="sf-field sf-address">
+            <label>
+            Street Address 
+            <span className="errors">{errors.address ? ' ' + errors.address : null}</span>
+            </label>
+            <input 
+                className="create-spot-input"
+                placeholder="Street Address"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+            />
+        </div>
+
+        <div className="sf-field sf-city">
+            <label>
+            City 
+            <span className="errors">{errors.city ? ' ' + errors.city : null}</span>
+            </label>
+            <input 
+                className="create-spot-input"
+                placeholder="City"
+                value={city}
+                onChange={e => setCity(e.target.value)}
+            />
+        </div>
+
+        <div className="sf-field sf-state">
+            <label>
+            State 
+            <span className="errors">{errors.state ? ' ' + errors.state : null}</span>
+            </label>
+            <input 
+                className="create-spot-input"
+                placeholder="State"
+                value={state}
+                onChange={e => setState(e.target.value)}
+            />
+        </div>
 
         <h2>Describe your place to guests</h2>
         <p className="create-spot-caption">Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood</p>
@@ -189,5 +210,5 @@ export default function CreateSpotForm() {
         >{spotId ? "Update Your Spot" : "Create Spot"}</button>
 
         </form>
-    </>
+    </div>
 }
