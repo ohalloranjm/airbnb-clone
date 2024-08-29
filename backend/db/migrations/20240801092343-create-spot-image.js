@@ -26,7 +26,7 @@ module.exports = {
           onDelete: 'CASCADE',
         },
         url: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(1023),
           allowNull: false,
         },
         preview: {
@@ -43,7 +43,7 @@ module.exports = {
           defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
       },
-      options,
+      options
     );
   },
   async down(queryInterface, Sequelize) {

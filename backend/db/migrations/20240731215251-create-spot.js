@@ -26,7 +26,7 @@ module.exports = {
           onUpdate: 'CASCADE',
         },
         address: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(1023),
           allowNull: false,
         },
         city: {
@@ -52,7 +52,7 @@ module.exports = {
           allowNull: false,
         },
         description: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(1023),
           allowNull: false,
         },
         price: {
