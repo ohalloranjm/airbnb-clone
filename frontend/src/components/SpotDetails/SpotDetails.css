@@ -2,6 +2,19 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    height: 500px;
+}
+
+.si-image-primary {
+    object-fit: cover;
+    height: 500px;
+    width: 100%;
+} 
+
+.si-image-secondary {
+    object-fit: cover;
+    height: 245px;
+    width: 100%;
 }
 
 .si-images-secondary {

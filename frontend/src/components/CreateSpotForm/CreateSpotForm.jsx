@@ -143,7 +143,11 @@ export default function CreateSpotForm() {
                         }
                         return newSpot;
                     })
-                    .then(({ id }) => navigate(`/spots/${id}`))
+                    .then(({id}) => {
+                        dispatch(getSpotDetails(id))
+                        return id
+                    })
+                    .then(id => navigate(`/spots/${id}`))
                     .catch(async (res) => {
                         const data = await res.json();
                         if (data?.errors) setErrors(data.errors);
