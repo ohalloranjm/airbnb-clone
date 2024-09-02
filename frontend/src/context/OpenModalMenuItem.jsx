@@ -1,4 +1,6 @@
 import { useModal } from './Modal.jsx';
+import { useContext } from 'react';
+import { ElementContext } from './ElementContext.jsx';
 
 export default function OpenModalMenuItem({
   modalComponent, // component to render inside the modal
@@ -7,6 +9,7 @@ export default function OpenModalMenuItem({
   onModalClose // optional: callback function that will be called once the modal is closed
 }) {
   const { setModalContent, setOnModalClose } = useModal();
+  const { element } = useContext(ElementContext);
 
   const onClick = () => {
     if (onModalClose) setOnModalClose(onModalClose);
@@ -15,6 +18,6 @@ export default function OpenModalMenuItem({
   };
 
   return (
-    <li onClick={onClick} className="link">{itemText}</li>
+    <li onClick={onClick} className={`link-${element}`}>{itemText}</li>
   );
 }

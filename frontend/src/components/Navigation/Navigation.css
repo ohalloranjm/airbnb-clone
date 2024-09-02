@@ -33,7 +33,7 @@
     position: absolute;
     right: 5px;
     width: 150px;
-    border: 2px solid blue;
+    border: 2px solid;
     font-size: 0.9em;
     background-color: rgb(238, 251, 255);
 }

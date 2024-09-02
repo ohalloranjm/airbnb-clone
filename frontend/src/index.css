@@ -45,21 +45,30 @@ body {
     display: none;
 }
 
-.link, a {
+.link-water, a {
     cursor: pointer;
     color: blue
 }
 
-a.fire {
+.link-fire, a.fire {
+    cursor: pointer;
     color: red;
 }
 
-.link:hover, a:hover {
+.link-water:hover, a:hover {
     color: rgb(85, 246, 255);
 }
 
-a.fire:hover {
+.link-fire:hover, a.fire:hover {
     color: rgb(255, 147, 75);
+}
+
+.water-border {
+    border-color: blue,
+}
+
+.fire-border {
+    border-color: red;
 }
 
 .errors {

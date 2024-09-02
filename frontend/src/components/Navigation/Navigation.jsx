@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
   return (
 
       <nav className="navbar">
-        <NavLink to="/" className={"logo-link" + ` ${element}`}><img className="nav-logo" src="/logo.png" alt="{element}bnb" /> {element}bnb</NavLink>
+        <NavLink to="/" className={"logo-link" + ` ${element}`}><img className="nav-logo" src={`/${element}-logo.png`} alt={`${element}bnb`} /> {element}bnb</NavLink>
         {isLoaded && (
           <ul className="navbar-right">
             {sessionUser ? <li><NavLink to="/spots/new" className={element}>Create a New Spot</NavLink></li> : null}

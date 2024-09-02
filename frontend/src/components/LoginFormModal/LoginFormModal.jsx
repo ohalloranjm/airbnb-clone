@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import { ElementContext } from '../../context/ElementContext';
 import '../SessionModal.css'
 
 function LoginFormModal() {
@@ -10,6 +11,7 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const { element } = useContext(ElementContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,7 +56,7 @@ function LoginFormModal() {
         )}
         <button className='session-modal-submit' type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
       </form>
-      <button className="link demo-button" onClick={loginDemo}>Demo User</button>
+      <button className={`link-${element} demo-button`} onClick={loginDemo}>Demo User</button>
     </div>
   );
 }

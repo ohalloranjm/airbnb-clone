@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 export const ElementContext = createContext();
 
@@ -10,6 +10,10 @@ const ElementProvider = props => {
             {props.children}
         </ElementContext.Provider>
     )
+}
+
+export function useElement() {
+    return useContext(ElementContext)
 }
 
 export default ElementProvider;
