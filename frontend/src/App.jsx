@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
@@ -7,10 +7,12 @@ import SpotIndex from './components/SpotIndex';
 import SpotDetails from './components/SpotDetails';
 import CreateSpotForm from './components/CreateSpotForm';
 import ManageSpots from './components/ManageSpots';
+import { ElementContext } from './context/ElementContext';
 
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const { element } = useContext(ElementContext)
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => {
@@ -19,10 +21,10 @@ function Layout() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className={`background-wrapper-${element}`}>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
-    </>
+    </div>
   );
 }
 

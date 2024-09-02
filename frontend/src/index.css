@@ -29,12 +29,16 @@ img {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    padding: 5px;
-    background-color: rgb(197, 241, 255)
 }
 
-body.fire {
-    background-color: rgb(255, 205, 113);
+.background-wrapper-water {
+    padding: 5px;
+    background-color: rgb(197, 241, 255);
+}
+
+.background-wrapper-fire {
+    padding: 5px;
+    background-color: rgb(255, 242, 159);
 }
 
 .hidden {
