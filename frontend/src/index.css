@@ -33,6 +33,10 @@ body {
     background-color: rgb(197, 241, 255)
 }
 
+body.fire {
+    background-color: rgb(255, 205, 113);
+}
+
 .hidden {
     display: none;
 }
@@ -42,8 +46,16 @@ body {
     color: blue
 }
 
+a.fire {
+    color: red;
+}
+
 .link:hover, a:hover {
     color: rgb(85, 246, 255);
+}
+
+a.fire:hover {
+    color: rgb(255, 147, 75);
 }
 
 .errors {
@@ -85,7 +97,23 @@ p {
     color: black;
 }
 
-.real-button:disabled {
+.fire-button {
+    border: 2px solid darkred;
+    box-shadow: 2px 2px orange;
+    background-color: red;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+.real-button:hover {
+    background-color: orange;
+    border: 2px solid red;
+    box-shadow: 2px 2xp darkred;
+    color: black;
+}
+
+.real-button:disabled, .fire-button:disabled {
     background-color: gray;
     color: black;
     border: none;
