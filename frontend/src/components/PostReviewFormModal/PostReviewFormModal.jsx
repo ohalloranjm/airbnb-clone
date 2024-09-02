@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { postReview, getReviewsBySpotId } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import './PostReviewFormModal.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar as star0 } from '@fortawesome/free-regular-svg-icons'
+import { faStar as star1 } from '@fortawesome/free-solid-svg-icons'
 
 export default function PostReviewFormModal({spotId}) {
     const [review, setReview] = useState('');
@@ -42,11 +45,12 @@ export default function PostReviewFormModal({spotId}) {
                     onPointerEnter={hover(n)}
                     onPointerLeave={hover(stars)}
                     onClick={clickStar(n)}
-                    >{ showStars >= n ? '★' : '✰'}</button>)
+                    ><FontAwesomeIcon icon={showStars >= n ? star1 : star0} /></button>)
                 }
                 
             Stars
             </label>
+        
             <button
                 type='submit'
                 className="real-button"
