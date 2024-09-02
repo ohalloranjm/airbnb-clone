@@ -1,6 +1,6 @@
 .session-modal {
     width: 350px;
-    border: 5px blue solid;
+    border: 5px solid;
     padding: 10px;
     display: flex;
     flex-direction: column;

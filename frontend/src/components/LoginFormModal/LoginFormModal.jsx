@@ -34,7 +34,7 @@ function LoginFormModal() {
   }
 
   return (
-    <div className="session-modal">
+    <div className={`session-modal ${element}-border`}>
       <h1 className="session-modal-title">Log In</h1>
       <form onSubmit={handleSubmit} className="session-modal-form">
           <input

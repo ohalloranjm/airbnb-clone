@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
+import { useElement } from '../../context/ElementContext';
 import * as sessionActions from '../../store/session';
 
 function SignupFormModal() {
@@ -13,6 +14,7 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const { element } = useElement();
 
   const submitIsDisabled = () => {
     return !email.length 
@@ -50,7 +52,7 @@ function SignupFormModal() {
   };
 
   return (
-    <div className="session-modal">
+    <div className={`session-modal ${element}-border`}>
       <h1 className="session-modal-title">Sign Up</h1>
       <form className="session-modal-form" onSubmit={handleSubmit}>
         <input
