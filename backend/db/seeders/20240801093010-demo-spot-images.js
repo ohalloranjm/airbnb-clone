@@ -11,124 +11,46 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up(queryInterface, Sequelize) {
     const spots = await Spot.findAll();
-    const spotIds = [];
 
+    const spotIds = [];
     spots.forEach(spot => {
       spotIds.push(spot.id);
     });
 
-    const images = [
-      {
-        spotId: spotIds[0],
-        url: '/ocean.png',
-        preview: true,
-      },
-      {
-        spotId: spotIds[0],
-        url: '/ocean2.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[0],
-        url: '/ocean3.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[0],
-        url: '/ocean4.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[0],
-        url: '/ocean5.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[0],
-        url: '/ocean6.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[1],
-        url: '/underwater.png',
-        preview: true,
-      },
-      {
-        spotId: spotIds[1],
-        url: '/underwater2.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[1],
-        url: '/underwater3.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[1],
-        url: '/underwater4.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[2],
-        url: '/puddle.png',
-        preview: true,
-      },
-      {
-        spotId: spotIds[2],
-        url: '/puddle2.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[2],
-        url: '/puddle3.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[2],
-        url: '/puddle4.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[3],
-        url: '/river.png',
-        preview: true,
-      },
-      {
-        spotId: spotIds[3],
-        url: '/river2.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[3],
-        url: '/river3.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[3],
-        url: '/river4.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[4],
-        url: '/waterpark.png',
-        preview: true,
-      },
-      {
-        spotId: spotIds[4],
-        url: '/waterpark2.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[4],
-        url: '/waterpark3.png',
-        preview: false,
-      },
-      {
-        spotId: spotIds[4],
-        url: '/waterpark4.png',
-        preview: false,
-      },
+    const imageUrls = [
+      '/ocean.png',
+      '/ocean2.png',
+      '/ocean3.png',
+      '/ocean4.png',
+      '/ocean5.png',
+      '/ocean6.png',
+      '/underwater.png',
+      '/underwater2.png',
+      '/underwater3.png',
+      '/underwater4.png',
+      '/puddle.png',
+      '/puddle2.png',
+      '/puddle3.png',
+      '/puddle4.png',
+      '/river.png',
+      '/river2.png',
+      '/river3.png',
+      '/river4.png',
+      '/waterpark.png',
+      '/waterpark2.png',
+      '/waterpark3.png',
+      '/waterpark4.png',
     ];
+    let currentUrl = 0;
+
+    const images = [];
+
+    for (const spotId of spotIds) {
+      for (let i = 0; i < 5; i++) {
+        images.push({ spotId, preview: !i, url: imageUrls[currentUrl] });
+        currentUrl = (currentUrl + 1) % imageUrls.length;
+      }
+    }
 
     for (const image of images) {
       await SpotImage.create(image);
