@@ -1,6 +1,10 @@
 # waterbnb
 
-A water-themed airbnb clone.
+A water-themed clone of Airbnb.
+
+[> Live demo here <](https://waterhome.onrender.com/)
+
+![waterbnb](images/overview.png)
 
 ## Technologies Used
 
@@ -8,6 +12,8 @@ A water-themed airbnb clone.
 - Sequelize
 - React
 - Redux
+
+![code snippet](images/code_snippet.png)
 
 ## How to Launch Locally
 
