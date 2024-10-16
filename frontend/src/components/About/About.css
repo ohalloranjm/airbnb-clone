@@ -1,0 +1,12 @@
+.about-joy {
+  width: fit-content;
+  margin: auto;
+  border-top: 3px solid blue;
+  display: flex;
+  column-gap: 5px;
+  padding-top: 2px;
+}
+
+.about-joy > div {
+  font-size: 0.8em;
+}

@@ -7,6 +7,7 @@ import SpotIndex from './components/SpotIndex';
 import SpotDetails from './components/SpotDetails';
 import CreateSpotForm from './components/CreateSpotForm';
 import ManageSpots from './components/ManageSpots';
+import About from './components/About/About';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ function Layout() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => {
-      setIsLoaded(true)
+      setIsLoaded(true);
     });
   }, [dispatch]);
 
@@ -22,6 +23,7 @@ function Layout() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
+      <About />
     </>
   );
 }
@@ -32,26 +34,26 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <SpotIndex />
+        element: <SpotIndex />,
       },
       {
         path: 'spots/new',
-        element: <CreateSpotForm />
+        element: <CreateSpotForm />,
       },
       {
         path: 'spots/current',
-        element: <ManageSpots />
+        element: <ManageSpots />,
       },
       {
         path: '/spots/:spotId',
-        element: <SpotDetails />
+        element: <SpotDetails />,
       },
       {
         path: '/spots/:spotId/edit',
-        element: <CreateSpotForm />
-      }
-    ]
-  }
+        element: <CreateSpotForm />,
+      },
+    ],
+  },
 ]);
 
 function App() {
